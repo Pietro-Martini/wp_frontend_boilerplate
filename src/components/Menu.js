@@ -5,17 +5,23 @@ import {PagesAPI} from '../renderProps/apiCommunicator'
 import {Link} from 'react-router-dom'
 
 const Menu = props => (
-  <PagesAPI render={createLinks} />
+  <PagesAPI render={pages => (
+    <ul className='menu'>
+      {createMenuItems(pages)}
+    </ul>
+  	)} />
 )
 
-const createLinks = pages => pages.map(({title, slug}) => {
+const createMenuItems = pages => pages.map(({title, slug}) => {
   return (
-    <Link
-      key={slug}
-      to={`/${slug}`}
-    >
-      {title.rendered}
-    </Link>
+    <li className='menu__item'>
+      <Link
+        key={slug}
+        to={`/${slug}`}
+      >
+        {title.rendered}
+      </Link>
+    </li>
   )
 })
 
