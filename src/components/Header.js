@@ -1,11 +1,11 @@
 import React from 'react'
 
-import {PagesAPI} from '../renderProps/apiCommunicator'
+import Menu from '../components/Menu'
 
 const Header = props => {
-  return <PagesAPI render={pages => {
-    return <div>Header</div>
-  }} />
+  return (
+    <Menu />
+  )
 }
 
 export default Header

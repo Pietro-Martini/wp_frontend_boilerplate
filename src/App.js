@@ -25,15 +25,13 @@ class App extends Component {
   }
 }
 
-const createRoutes = pages => {
-  return pages.map(({slug}) => (
-    <Route
-      key={slug}
-      component={pageComponents[slug]}
-      path={`/${slug}`}
-      exact
-    />
-  ))
-}
+const createRoutes = pages => pages.map(({slug}) => (
+  <Route
+    key={slug}
+    component={pageComponents[slug]}
+    path={`/${slug}`}
+    exact
+  />
+))
 
 export default App
