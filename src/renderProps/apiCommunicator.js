@@ -1,8 +1,9 @@
 import React from 'react'
 
 import apiReq from '../helpers/apiReq'
+import encodeQueryParams from '../helpers/encodeQueryParams'
 
-const apiCommunicator = (entity, multiple) => {
+const apiCommunicator = ({entity, multiple, fn}) => {
   return class APICommunicator extends React.Component {
     state = {
       data: multiple ? [] : {}
@@ -12,11 +13,11 @@ const apiCommunicator = (entity, multiple) => {
       this.getEntityData()
     }
 
-    getEntityData = () => {
-      const {slug} = this.props
+    getEntityData = () => {      
+      const queryParams = (fn && fn(this.props.queryColl)) || ''
 
       apiReq({
-        endpoint: `${entity}${multiple ? '' : `?slug=${slug}`}`,
+        endpoint: `${entity}${queryParams}`,
         successFn: data => {
           this.setState({
             data: multiple ? data : data[0]
@@ -33,10 +34,24 @@ const apiCommunicator = (entity, multiple) => {
 
 // Single Entity
 
-export const PostAPI = apiCommunicator('posts', false)
-export const PageAPI = apiCommunicator('pages', false)
+export const PostAPI = apiCommunicator({
+  entity: 'posts',
+  fn: encodeQueryParams
+})
+
+export const PageAPI = apiCommunicator({
+  entity: 'pages',
+  fn: encodeQueryParams
+})
 
 // Multiple Entities
 
-export const PagesAPI = apiCommunicator('pages', true)
-export const PostsAPI = apiCommunicator('pages', true)
+export const PostsAPI = apiCommunicator({
+  entity: 'posts',
+  multiple: true
+})
+
+export const PagesAPI = apiCommunicator({
+  entity: 'pages',
+  multiple: true
+})
