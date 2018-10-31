@@ -17,7 +17,7 @@ class App extends Component {
     return (
       <Router>
           <DataStoreProvider>
-              {({pages, page}) => {
+              {({pages}) => {
                   return (
                       <div className='app'>
                         <Header />
@@ -37,9 +37,8 @@ class App extends Component {
 const createRoutes = pages => pages.map(p => (
   <Route
     key={p.slug}
-    render={withConsumer(DatastoreConsumer)(({page}) => {
+    render={withConsumer(DatastoreConsumer)(({page}) => {        
         const Component = pageComponents[p.slug]
-        console.log(Component)
         return <Component page={page}/>
     })}
     path={`/${p.slug}`}
