@@ -1,6 +1,5 @@
 import React, { Component } from 'react'
 import apiReq from '../helpers/apiReq'
-import transformObj from '../helpers/transformObj'
 
 const DatastoreContext = React.createContext('datastoreContext')
 
