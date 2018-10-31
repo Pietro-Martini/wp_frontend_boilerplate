@@ -5,6 +5,7 @@ import {DatastoreConsumer} from '../providers/DataStoreProvider'
 import {Link} from 'react-router-dom'
 
 import encodeQueryParams from '../helpers/encodeQueryParams'
+import withConsumer from '../helpers/withConsumer'
 
 const Menu = ({pages, getPage}) => (
   <ul className='menu'>
@@ -28,12 +29,11 @@ const createMenuItems = (pages, getPage) => pages.map(({title, slug}) => {
   )
 })
 
-export default function () {
-        return (
-            <DatastoreConsumer>
-                {({pages, getPage}) => {
-                    return <Menu pages={pages} getPage={getPage}/>
-                }}
-            </DatastoreConsumer>
-        )
-}
+export default withConsumer(DatastoreConsumer)(
+    ({pages, getPage}) => (
+        <Menu
+            pages={pages}
+            getPage={getPage}
+        />
+    )
+)

@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import apiReq from '../helpers/apiReq'
+import encodeQueryParams from '../helpers/encodeQueryParams'
 
 const DatastoreContext = React.createContext('datastoreContext')
 
@@ -17,6 +18,7 @@ export default class DataStoreProvider extends Component {
 
     componentDidMount = () => {
         this.getPages()
+        this.getPage(encodeQueryParams({slug: 'home'}))
     }
 
     getData = (element, fn) => (queryParams = '') => {
@@ -35,13 +37,10 @@ export default class DataStoreProvider extends Component {
     getPage = this.getData('pages', transformNewStateForSingletons)
 
     render = () => {
-        const {posts, pages, page, post} = this.state
         const {getPage} = this
-
-        const state = {posts, pages, page, post}
         const actions = {getPage}
 
-        const mergedProps = {...state, ...actions}
+        const mergedProps = {...this.state, ...actions}
 
         return (
             <Provider value={mergedProps}>

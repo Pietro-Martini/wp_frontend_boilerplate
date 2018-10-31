@@ -1,21 +1,27 @@
 import React, { Component } from 'react'
 import './App.css'
+
 import Header from './components/Header'
 import Footer from './components/Footer'
+
+import Home from './components/Home'
+
 import {BrowserRouter as Router, Route} from 'react-router-dom'
 import pageComponents from './constants/pageComponents'
 import {keepPropsInObj} from './helpers/filterPropsFromObj'
-import DataStoreProvider from './providers/DataStoreProvider'
+import withConsumer from './helpers/withConsumer'
+import DataStoreProvider, {DatastoreConsumer} from './providers/DataStoreProvider'
 
 class App extends Component {
   render () {
     return (
       <Router>
           <DataStoreProvider>
-              {({pages}) => {
+              {({pages, page}) => {
                   return (
                       <div className='app'>
                         <Header />
+                        <Route path='/(home|/)/' component={Home}/>
                         {createRoutes(pages)}
                         <Footer />
                       </div>
@@ -28,11 +34,15 @@ class App extends Component {
   }
 }
 
-const createRoutes = pages => pages.map(page => (
+const createRoutes = pages => pages.map(p => (
   <Route
-    key={page.slug}
-    component={pageComponents[page.slug]}
-    path={`/${page.slug}`}
+    key={p.slug}
+    render={withConsumer(DatastoreConsumer)(({page}) => {
+        const Component = pageComponents[p.slug]
+        console.log(Component)
+        return <Component page={page}/>
+    })}
+    path={`/${p.slug}`}
     exact
   />
 ))
