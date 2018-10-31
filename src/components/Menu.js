@@ -1,20 +1,23 @@
 import React from 'react'
 
-import {PagesAPI} from '../renderProps/apiCommunicator'
+import {DatastoreConsumer} from '../providers/DataStoreProvider'
 
 import {Link} from 'react-router-dom'
 
-const Menu = props => (
-  <PagesAPI render={pages => (
-    <ul className='menu'>
-      {createMenuItems(pages)}
-    </ul>
-  	)} />
+import encodeQueryParams from '../helpers/encodeQueryParams'
+
+const Menu = ({pages, getPage}) => (
+  <ul className='menu'>
+      {createMenuItems(pages, getPage)}
+  </ul>
 )
 
-const createMenuItems = pages => pages.map(({title, slug}) => {
+const createMenuItems = (pages, getPage) => pages.map(({title, slug}) => {
   return (
-    <li className='menu__item'>
+    <li
+        className='menu__item'
+        onClick={e => getPage(encodeQueryParams({slug}))}
+    >
       <Link
         key={slug}
         to={`/${slug}`}
@@ -25,4 +28,12 @@ const createMenuItems = pages => pages.map(({title, slug}) => {
   )
 })
 
-export default Menu
+export default function () {
+        return (
+            <DatastoreConsumer>
+                {({pages, getPage}) => {
+                    return <Menu pages={pages} getPage={getPage}/>
+                }}
+            </DatastoreConsumer>
+        )
+}
