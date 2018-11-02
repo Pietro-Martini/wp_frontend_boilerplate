@@ -6,11 +6,24 @@ import {Link} from 'react-router-dom'
 
 import encodeQueryParams from '../helpers/encodeQueryParams'
 import withConsumer from '../helpers/withConsumer'
+import ActiveStateToggling from '../renderProps/ActiveStateToggling'
 
 const Menu = ({pages, getPage}) => (
-  <ul className='menu'>
-      {createMenuItems(pages, getPage)}
-  </ul>
+    <ActiveStateToggling>
+        {({active, toggleActiveState}) => (
+            <nav className='menu'>
+                <div
+                    className='menu__toggle'
+                    onClick={toggleActiveState}
+                >
+                    Toggle Menu
+                </div>
+                <ul className={`menu__list ${active ? 'active' : ''}`}>
+                    {createMenuItems(pages, getPage)}
+                </ul>
+            </nav>
+        )}
+    </ActiveStateToggling>
 )
 
 const createMenuItems = (pages, getPage) => pages.map(({title, slug}) => {

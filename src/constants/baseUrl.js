@@ -1,1 +1,1 @@
-export default 'http://localhost:8888/wp_api_testing/index.php/wp-json/wp/v2/'
+export default 'http://localhost:81/wordpress/index.php/wp-json/wp/v2/'
