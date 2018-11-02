@@ -25,10 +25,10 @@ export default class DataStoreProvider extends Component {
 
     setDataFetching = shown => this.setState({dataFetching: shown})
 
-    fetchData = (...fns) => (resource, stateKey) => (queryParams = '') => {
+    fetchData = (...fns) => (endpoint, stateKey) => (queryParams = '') => {
         this.setDataFetching(true)
         apiReq({
-            endpoint: `${resource}${queryParams}`,
+            endpoint: `${endpoint}${queryParams}`,
             successFn: res => {
                 this.setDataFetching(false)
                 const newValue = fns.length && compose(...fns)(res) || res
@@ -51,6 +51,8 @@ export default class DataStoreProvider extends Component {
         const actions = {getPage}
 
         const mergedProps = {...this.state, ...actions}
+
+        console.log(this.state)
 
         return (
             <Provider value={mergedProps}>
