@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import apiReq from '../helpers/apiReq'
 import encodeQueryParams from '../helpers/encodeQueryParams'
+import compose from '../helpers/compose'
 
 const DatastoreContext = React.createContext('datastoreContext')
 
@@ -13,7 +14,8 @@ export default class DataStoreProvider extends Component {
         posts: [],
         pages: [],
         page: {},
-        post: {}
+        post: {},
+        dataFetching: false
     }
 
     componentDidMount = () => {
@@ -21,20 +23,28 @@ export default class DataStoreProvider extends Component {
         this.getPage(encodeQueryParams({slug: 'home'}))
     }
 
-    getData = (element, fn) => (queryParams = '') => {
+    setDataFetching = shown => this.setState({dataFetching: shown})
+
+    fetchData = (...fns) => (resource, stateKey) => (queryParams = '') => {
+        this.setDataFetching(true)
         apiReq({
-            endpoint: `${element}${queryParams}`,
+            endpoint: `${resource}${queryParams}`,
             successFn: res => {
-                const newState = fn && fn({[element]: res}) || {[element]: res}
-                this.setState(newState)
+                this.setDataFetching(false)
+                const newValue = fns.length && compose(...fns)(res) || res
+                this.setState({[stateKey]: newValue})
             }
         })
     }
 
-    getPosts = this.getData('posts')
-    getPages = this.getData('pages')
-    getPost = this.getData('posts', transformNewStateForSingletons)
-    getPage = this.getData('pages', transformNewStateForSingletons)
+    fetchSingleton = this.fetchData(res => res[0])
+    fetchMultiple = this.fetchData()
+
+    getPost = this.fetchSingleton('posts', 'post')
+    getPage = this.fetchSingleton('pages', 'page')
+
+    getPosts = this.fetchMultiple('posts', 'posts')
+    getPages = this.fetchMultiple('pages', 'pages')
 
     render = () => {
         const {getPage} = this
@@ -48,14 +58,4 @@ export default class DataStoreProvider extends Component {
             </Provider>
         )
     }
-}
-
-const transformNewStateForSingletons = newState => {
-    return Object.keys(newState)
-    .reduce((transformedState, k) => {
-        const singularElement = k.slice(0, -1)
-        const [val] = newState[k]
-
-        return {[singularElement] : val}
-    }, {})
 }
