@@ -52,8 +52,6 @@ export default class DataStoreProvider extends Component {
 
         const mergedProps = {...this.state, ...actions}
 
-        console.log(this.state)
-
         return (
             <Provider value={mergedProps}>
                 {this.props.children(mergedProps)}
