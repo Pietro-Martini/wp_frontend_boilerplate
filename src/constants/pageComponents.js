@@ -5,5 +5,5 @@ export default {
   about: SamplePost,
   'sample-page': SamplePost,
   home: Home,
-  '/': Home
+  '': Home
 }
