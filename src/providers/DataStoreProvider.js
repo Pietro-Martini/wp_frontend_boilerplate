@@ -1,61 +1,31 @@
 import React, { Component } from 'react'
-import apiReq from '../helpers/apiReq'
-import encodeQueryParams from '../helpers/encodeQueryParams'
-import compose from '../helpers/compose'
+import API from '../renderProps/API'
 
 const DatastoreContext = React.createContext('datastoreContext')
 
 const {Provider} = DatastoreContext
 
+const PagesAPI = API({
+  initialState: {
+    pages: [],
+    page: {}
+  },
+  fetchArgs: [
+    {endpoint: 'pages'},
+    {endpoint: 'pages', transformStateFns: [x => x[0]]}
+  ]
+})
+
 export const DatastoreConsumer = DatastoreContext.Consumer
 
-export default class DataStoreProvider extends Component {
-    state = {
-        posts: [],
-        pages: [],
-        page: {},
-        post: {},
-        dataFetching: false
-    }
-
-    componentDidMount = () => {
-        this.getPages()
-        this.getPage(encodeQueryParams({slug: 'home'}))
-    }
-
-    setDataFetching = shown => this.setState({dataFetching: shown})
-
-    fetchData = (...fns) => (endpoint, stateKey) => (queryParams = '') => {
-        this.setDataFetching(true)
-        apiReq({
-            endpoint: `${endpoint}${queryParams}`,
-            successFn: res => {
-                this.setDataFetching(false)
-                const newValue = fns.length && compose(...fns)(res) || res
-                this.setState({[stateKey]: newValue})
-            }
-        })
-    }
-
-    fetchSingleton = this.fetchData(res => res[0])
-    fetchMultiple = this.fetchData()
-
-    getPost = this.fetchSingleton('posts', 'post')
-    getPage = this.fetchSingleton('pages', 'page')
-
-    getPosts = this.fetchMultiple('posts', 'posts')
-    getPages = this.fetchMultiple('pages', 'pages')
-
-    render = () => {
-        const {getPage} = this
-        const actions = {getPage}
-
-        const mergedProps = {...this.state, ...actions}
-
-        return (
-            <Provider value={mergedProps}>
-                {this.props.children(mergedProps)}
-            </Provider>
-        )
-    }
+export default function ({children}) {
+  return (
+    <PagesAPI>
+      {pagesAPIObj => (
+        <Provider value={pagesAPIObj}>
+          {children}
+        </Provider>
+      )}
+    </PagesAPI>
+  )
 }

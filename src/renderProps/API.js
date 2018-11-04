@@ -13,29 +13,41 @@ export default function API ({initialState, fetchArgs}) {
         }
 
         defineActions = (initialState, fetchArgs) => {
+            const httpMethods = ['get', 'post', 'put', 'delete']
+
             return Object.keys(initialState).map((k, i) => {
                 return {
                     ...fetchArgs[i],
                     stateKey: k
                 }
-            }).reduce((actionsColl, arg) => {
-                const {stateKey} = arg
-                const actionName = `fetch${stateKey[0].toUpperCase()}${stateKey.slice(1)}`
+            }).reduce((actionsColl, arg, i) => {
 
-                actionsColl[actionName] = this.fetchData(arg)
+                const {stateKey} = arg
+
+                httpMethods.forEach(method => {
+                  const resource = `${stateKey[0].toUpperCase()}${stateKey.slice(1)}`
+                  const actionName = `${method}${resource}`
+
+                  actionsColl[actionName] = this.fetchData({
+                    ...arg,
+                    method: method.toUpperCase()
+                  })
+                })
+
                 return actionsColl
             }, {})
         }
 
         setDataFetching = shown => this.setState({dataFetching: shown})
 
-        fetchData = ({endpoint, stateKey, transformStateFns}) => (queryParams = '') => {
+        fetchData = ({endpoint, stateKey, method, transformStateFns}) => (queryParams = '') => {
             this.setDataFetching(true)
             apiReq({
                 endpoint: `${endpoint}${queryParams}`,
+                method,
                 successFn: res => {
                     this.setDataFetching(false)
-                    const newValue = transformStateFns.length && compose(...transformStateFns)(res) || res
+                    const newValue = transformStateFns && compose(...transformStateFns)(res) || res
                     this.setState({[stateKey]: newValue})
                 }
             })
