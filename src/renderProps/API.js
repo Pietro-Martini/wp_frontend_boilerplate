@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import apiReq from '../helpers/apiReq'
 import compose from '../helpers/compose'
 
-export default function API ({initialState, fetchArgs}) {
+function API ({initialState, fetchArgs}) {
     return class extends React.Component {
         constructor(props) {
             super(props)
@@ -60,3 +60,25 @@ export default function API ({initialState, fetchArgs}) {
         }
     }
 }
+
+export const PagesAPI = API({
+  initialState: {
+    pages: [],
+    page: {}
+  },
+  fetchArgs: [
+    {endpoint: 'pages'},
+    {endpoint: 'pages', transformStateFns: [x => x[0]]}
+  ]
+})
+
+export const PostsAPI = API({
+  initialState: {
+    posts: [],
+    post: {}
+  },
+  fetchArgs: [
+    {endpoint: 'posts'},
+    {endpoint: 'posts', transformStateFns: [x => x[0]]}
+  ]
+})

@@ -1,11 +1,8 @@
 import React from 'react'
 
-import {DatastoreConsumer} from '../providers/DataStoreProvider'
-
 import {Link} from 'react-router-dom'
 
 import encodeQueryParams from '../helpers/encodeQueryParams'
-import withConsumer from '../helpers/withConsumer'
 import ActiveStateToggling from '../renderProps/ActiveStateToggling'
 
 const Menu = ({pages, getPage}) => (
@@ -42,11 +39,4 @@ const createMenuItems = (pages, getPage) => pages.map(({title, slug}) => {
   )
 })
 
-export default withConsumer(DatastoreConsumer)(
-    ({pages, getPage}) => (
-        <Menu
-            pages={pages}
-            getPage={getPage}
-        />
-    )
-)
+export default Menu
