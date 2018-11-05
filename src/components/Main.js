@@ -3,18 +3,17 @@ import {Route} from 'react-router-dom'
 
 import pageComponents from '../constants/pageComponents'
 import {keepPropsInObj} from '../helpers/filterPropsFromObj'
-import withConsumer from '../helpers/withConsumer'
 import compose from '../helpers/compose'
 import encodeQueryParams from '../helpers/encodeQueryParams'
 import getCollBasedOnVal from '../helpers/getCollBasedOnVal'
 
-import {DatastoreConsumer} from '../providers/DataStoreProvider'
-
 class Main extends React.Component {
   componentDidMount = () => {
-    const {getPage, getPages} = this.props
-    
-    getPage(encodeQueryParams({slug: 'home'}))
+    const {getPage, getPages, history} = this.props
+
+    const initialPage = history.location.pathname.slice(1)
+
+    getPage(encodeQueryParams({slug: initialPage}))
     getPages()
   }
 
@@ -38,7 +37,7 @@ class Main extends React.Component {
   }
 }
 
-export default withConsumer(DatastoreConsumer)(pageAPIMethods => <Main {...pageAPIMethods}/>)
+export default Main
 
 const createDefaultUrlFallback = pages => pages.reduce((newColl, p) => {
   const homeRoute = getCollBasedOnVal(p, 'home')

@@ -2,9 +2,12 @@ import React from 'react'
 
 import Menu from '../components/Menu'
 
-const Header = props => {
+const Header = ({pages, getPage}) => {
   return (
-    <Menu />
+    <Menu
+        pages={pages}
+        getPage={getPage}
+    />
   )
 }
 

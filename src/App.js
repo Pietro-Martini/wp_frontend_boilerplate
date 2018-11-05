@@ -8,21 +8,25 @@ import Main from './components/Main'
 
 import Home from './components/Home'
 
-import {BrowserRouter as Router} from 'react-router-dom'
-import DataStoreProvider from './providers/DataStoreProvider'
+import {BrowserRouter as Router, Route} from 'react-router-dom'
+import {PagesAPI} from './renderProps/API'
 
 class App extends Component {
   render () {
     return (
       <Router>
-          <DataStoreProvider>
-            <div className='app'>
-              <Header />
-              <Loader />
-              <Main />
-              <Footer />
-            </div>
-          </DataStoreProvider>
+          <Route path='*' render={({history}) => (
+              <PagesAPI>
+                  {pageAPI => (
+                      <div className='app'>
+                        <Header {...pageAPI} />
+                        <Loader {...pageAPI} />
+                        <Main {...pageAPI} history={history} />
+                        <Footer />
+                      </div>
+                  )}
+              </PagesAPI>
+          )} />
       </Router>
 
     )
