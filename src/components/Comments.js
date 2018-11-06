@@ -31,7 +31,7 @@ export default ({postId}) => (
     <CommentsAPI>
         {({comments, getComments}) => (
             <Comments
-                comments={comments}
+                comments={comments.filter(c => c.status === 'approved')}
                 getComments={getComments}
                 postId={postId}
             />
