@@ -82,3 +82,14 @@ export const PostsAPI = API({
     {endpoint: 'posts', transformStateFns: [x => x[0]]}
   ]
 })
+
+export const CommentsAPI = API({
+  initialState: {
+    comments: [],
+    comment: {}
+  },
+  fetchArgs: [
+    {endpoint: 'comments'},
+    {endpoint: 'comments', transformStateFns: [x => x[0]]}
+  ]
+})

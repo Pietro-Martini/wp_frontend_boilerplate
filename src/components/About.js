@@ -1,34 +1,11 @@
 import React from 'react'
 
-import {PostsAPI} from '../renderProps/API'
+import Posts from './Posts'
 
-class About extends React.Component {
-  componentDidMount = () => {
-      this.props.getPosts()
-  }
+const About = () => (
+    <div className='about'>
+        <Posts/>
+    </div>
+)
 
-  render = () => {
-    return (
-        <div className='about'>
-            {this.props.posts.map(p => {
-                return p.slug
-            })}
-        </div>
-    )
-  }
-}
-
-export default function (props) {
-    return (
-        <PostsAPI>
-            {({posts, getPosts}) => {
-                return (
-                    <About
-                        posts={posts}
-                        getPosts={getPosts}
-                    />
-                )
-            }}
-        </PostsAPI>
-    )
-}
+export default About
