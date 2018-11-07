@@ -1,6 +1,7 @@
 import React from 'react'
 
 import Comment from './Comment'
+import CreateCommentForm from './CreateCommentForm'
 
 import encodeQueryParams from '../helpers/encodeQueryParams'
 
@@ -20,7 +21,9 @@ class Comments extends React.Component {
                     {this.props.comments.map(c => <Comment {...c} />)}
                 </ul>
                 <div className='comments__create-comment'>
-
+                    <CreateCommentForm
+                        postId={this.props.postId}
+                    />
                 </div>
             </div>
         )
