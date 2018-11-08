@@ -7,13 +7,14 @@ import validationFns from '../validationFns/createCommentFormValidations'
 
 import Field from './Field'
 
-export default ({postId}) => {
+export default ({postComment, postId}) => {
     return (
-        <Form fields={fields} validationFns={validationFns}>
+        <Form fields={fields} validationFns={validationFns} onSubmit={
+            body => postComment({...body, post: postId})
+        }>
             {formState => (
                 fields.map(f => {
                     const fieldName = f.name
-
                     return (
                         <Field {...f}
                             value={formState[fieldName].value}

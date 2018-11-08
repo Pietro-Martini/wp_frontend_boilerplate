@@ -12,8 +12,9 @@ class Main extends React.Component {
     const {getPage, getPages, history} = this.props
 
     const initialPage = history.location.pathname.slice(1)
+    const queryParams = encodeQueryParams({slug: initialPage})
 
-    getPage(encodeQueryParams({slug: initialPage}))
+    getPage({queryParams})
     getPages()
   }
 

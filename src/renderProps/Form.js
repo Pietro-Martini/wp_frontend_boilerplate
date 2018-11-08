@@ -1,5 +1,6 @@
 import React from 'react'
 import values from '../helpers/values'
+import entries from '../helpers/entries'
 
 export default class Form extends React.Component {
     constructor(props) {
@@ -37,12 +38,23 @@ export default class Form extends React.Component {
         })
     }
 
+    handleSubmit = e => {
+        e.preventDefault()
+
+        const formBody = entries(this.state).reduce((formBody, [field, fieldState]) => {
+            formBody[field] = fieldState.value
+            return formBody
+        }, {})
+
+        this.props.onSubmit(formBody)
+    }
+
     render = () => {
-        const {children, onSubmit} = this.props
+        const {children} = this.props
         const {state} = this
 
         return (
-            <form onChange={this.onFieldChange} onSubmit={onSubmit}>
+            <form onChange={this.onFieldChange} onSubmit={this.handleSubmit}>
                 {children(this.state)}
                 <input type='submit' value='Submit' disabled={this.checkForInvalidEntries(state)} />
             </form>
