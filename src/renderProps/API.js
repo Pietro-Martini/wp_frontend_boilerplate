@@ -21,7 +21,6 @@ function API ({initialState, fetchArgs}) {
                     stateKey: k
                 }
             }).reduce((actionsColl, arg, i) => {
-
                 const {stateKey} = arg
 
                 httpMethods.forEach(method => {
@@ -40,17 +39,19 @@ function API ({initialState, fetchArgs}) {
 
         setDataFetching = shown => this.setState({dataFetching: shown})
 
-        fetchData = ({endpoint, stateKey, method, transformStateFns}) => (queryParams = '') => {
-            this.setDataFetching(true)
-            apiReq({
-                endpoint: `${endpoint}${queryParams}`,
-                method,
-                successFn: res => {
-                    this.setDataFetching(false)
-                    const newValue = transformStateFns && compose(...transformStateFns)(res) || res
-                    this.setState({[stateKey]: newValue})
-                }
-            })
+        fetchData = ({endpoint, stateKey, method, transformStateFns}) =>
+            ({queryParams = '', body} = {}) => {
+                this.setDataFetching(true)
+                apiReq({
+                    endpoint: `${endpoint}${queryParams}`,
+                    method,
+                    body,
+                    successFn: res => {
+                        this.setDataFetching(false)
+                        const newValue = transformStateFns && compose(...transformStateFns)(res) || res
+                        this.setState({[stateKey]: newValue})
+                    }
+                })
         }
 
         render = () => {

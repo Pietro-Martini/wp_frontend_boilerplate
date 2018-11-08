@@ -23,6 +23,7 @@ class Comments extends React.Component {
                 <div className='comments__create-comment'>
                     <CreateCommentForm
                         postId={this.props.postId}
+                        postComment={this.props.postComment}
                     />
                 </div>
             </div>
@@ -32,10 +33,11 @@ class Comments extends React.Component {
 
 export default ({postId}) => (
     <CommentsAPI>
-        {({comments, getComments}) => (
+        {({comments, getComments, postComment}) => (
             <Comments
                 comments={comments.filter(c => c.status === 'approved')}
                 getComments={getComments}
+                postComment={postComment}
                 postId={postId}
             />
         )}

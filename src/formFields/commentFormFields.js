@@ -1,4 +1,3 @@
-export default [
-    {name: 'title', type: 'text'},
+export default [    
     {name: 'content', type: 'text'}
 ]

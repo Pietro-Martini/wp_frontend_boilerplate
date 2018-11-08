@@ -1,8 +1,8 @@
 import baseUrl from '../constants/baseUrl'
 
 function apiReq (baseUrl) {
-  return ({endpoint, method, successFn, errorFn}) => {
-    return fetch(`${baseUrl}${endpoint}`, {method})
+  return ({endpoint, body, method, successFn, errorFn}) => {      
+    return fetch(`${baseUrl}${endpoint}`, {method, body})
     .then(res => res.json())
     .then(data => {
       successFn(data)

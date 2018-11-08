@@ -27,7 +27,7 @@ const createMenuItems = (pages, getPage) => pages.map(({title, slug}) => {
   return (
     <li
         className='menu__item'
-        onClick={e => getPage(encodeQueryParams({slug}))}
+        onClick={e => getPage({queryParams: encodeQueryParams({slug})})}
     >
       <Link
         key={slug}
