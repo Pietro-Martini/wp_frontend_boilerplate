@@ -12,12 +12,14 @@ import Home from './components/Home'
 import {BrowserRouter as Router, Route} from 'react-router-dom'
 import {PagesAPI} from './renderProps/API'
 
+import {AuthenticationProvider} from './providers/AuthenticationProvider'
+
 class App extends Component {
   render () {
     return (
       <Router>
           <Route path='*' render={({history}) => (
-              <React.Fragment>
+              <AuthenticationProvider>
                   <PagesAPI>
                       {pageAPI => (
                           <div className='app'>
@@ -28,8 +30,7 @@ class App extends Component {
                           </div>
                       )}
                   </PagesAPI>
-                  <Login />
-              </React.Fragment>
+              </AuthenticationProvider>
           )} />
       </Router>
 
