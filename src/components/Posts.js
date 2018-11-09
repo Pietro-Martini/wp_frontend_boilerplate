@@ -5,9 +5,7 @@ import {PostsAPI} from '../renderProps/API'
 import Post from './Post'
 
 class Posts extends React.Component {
-  componentDidMount = () => {
-      this.props.getPosts()
-  }
+  componentDidMount = this.props.getPosts
 
   render = () => {
     return (
