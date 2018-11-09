@@ -3,23 +3,22 @@ import React from 'react'
 import Form from '../renderProps/Form'
 import Field from '../components/Field'
 import {AuthAPI} from '../renderProps/API'
+import {AuthenticationConsumer} from '../providers/AuthenticationProvider'
 
 import validationFns from '../validationFns/loginFormValidations'
 
 import fields from '../formFields/loginFormFields'
 
-const Login = (props) => {
+const Login = ({postToken, login}) => {
     return (
         <Form fields={fields} validationFns={validationFns} onSubmit={
             ({username, password}) => {
-                props.postToken({
+                postToken({
                     headers: {
                         'Content-Type': 'application/x-www-form-urlencoded; charset=utf-8'
                     },
                     body: `password=${password}&username=${username}`,
-                    successCb: res => {
-                        
-                    }
+                    successCb: login
                 })
             }
         }>
@@ -38,17 +37,20 @@ const Login = (props) => {
     )
 }
 
-export default (props) => {
+export default props => {
     return (
-        <AuthAPI>
-            {({token, postToken}) => {
-                return (
-                    <Login {...props}
-                        token={token}
-                        postToken={postToken}
-                    />
-                )
-            }}
-        </AuthAPI>
+        <AuthenticationConsumer>
+            {({login, isAuthenticated}) => (
+                <AuthAPI>
+                    {({postToken}) => (
+                        <Login
+                            login={login}
+                            isAuthenticated={isAuthenticated}
+                            postToken={postToken}
+                        />
+                    )}
+                </AuthAPI>
+            )}
+        </AuthenticationConsumer>
     )
 }
