@@ -1,13 +1,25 @@
 import baseUrl from '../constants/baseUrl'
+import {appResourcesUrlExtension, jwtAuthTokenUrlExtension} from '../constants/urlExtensions'
 
 function apiReq (baseUrl) {
-  return ({endpoint, body, method, successFn, errorFn}) => {      
-    return fetch(`${baseUrl}${endpoint}`, {method, body})
+  return urlExtension => ({
+      endpoint,
+      headers,
+      body,
+      method,
+      successFn,
+      errorFn
+  }) => {
+    return fetch(
+        `${baseUrl}${urlExtension}${endpoint}`,
+        {method, body, headers}
+    )
     .then(res => res.json())
-    .then(data => {
-      successFn(data)
-    })
+    .then(successFn)
   }
 }
 
-export default apiReq(baseUrl)
+const apiReqWithBaseUrl = apiReq(baseUrl)
+
+export const apiReqAppResources = apiReqWithBaseUrl(appResourcesUrlExtension)
+export const apiReqJWTAuthToken = apiReqWithBaseUrl(jwtAuthTokenUrlExtension)

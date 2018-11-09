@@ -1,4 +1,4 @@
-const inputNotBlank = x => x === '' ? 'Input cannot be blank' : null
+import {inputNotBlank} from './index'
 
 export default {
     title: [inputNotBlank],

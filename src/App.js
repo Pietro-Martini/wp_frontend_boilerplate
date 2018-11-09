@@ -5,6 +5,7 @@ import Header from './components/Header'
 import Footer from './components/Footer'
 import Loader from './components/Loader'
 import Main from './components/Main'
+import Login from './components/Login'
 
 import Home from './components/Home'
 
@@ -16,16 +17,19 @@ class App extends Component {
     return (
       <Router>
           <Route path='*' render={({history}) => (
-              <PagesAPI>
-                  {pageAPI => (
-                      <div className='app'>
-                        <Header {...pageAPI} />
-                        <Loader {...pageAPI} />
-                        <Main {...pageAPI} history={history} />
-                        <Footer />
-                      </div>
-                  )}
-              </PagesAPI>
+              <React.Fragment>
+                  <PagesAPI>
+                      {pageAPI => (
+                          <div className='app'>
+                            <Header {...pageAPI} />
+                            <Loader {...pageAPI} />
+                            <Main {...pageAPI} history={history} />
+                            <Footer />
+                          </div>
+                      )}
+                  </PagesAPI>
+                  <Login />
+              </React.Fragment>
           )} />
       </Router>
 
