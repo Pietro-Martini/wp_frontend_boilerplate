@@ -21,7 +21,7 @@ export default ({postComment, getComments, postId, getJWTToken}) => {
                 ...body,
                 post: postId
               }),
-              successCb: res => getComments(encodeQueryParams({post: postId}))
+              successCb: () => getComments(encodeQueryParams({post: postId}))
             })
         }>
             {formState => (
