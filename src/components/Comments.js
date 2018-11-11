@@ -7,6 +7,8 @@ import encodeQueryParams from '../helpers/encodeQueryParams'
 
 import {CommentsAPI} from '../renderProps/API'
 
+import {AuthenticationConsumer} from '../providers/AuthenticationProvider'
+
 class Comments extends React.Component {
     componentDidMount = () => {
         const {postId, getComments} = this.props
@@ -15,16 +17,25 @@ class Comments extends React.Component {
     }
 
     render = () => {
+        const {comments, postId, postComment, getJWTToken, isAuthenticated} = this.props
+
+        console.log(this.props)
+
         return (
             <div className='comments'>
                 <ul className='comments__list'>
-                    {this.props.comments.map(c => <Comment {...c} />)}
+                    {comments.map(c => <Comment {...c} />)}
                 </ul>
                 <div className='comments__create-comment'>
-                    <CreateCommentForm
-                        postId={this.props.postId}
-                        postComment={this.props.postComment}
-                    />
+                  {
+                    isAuthenticated() && (
+                      <CreateCommentForm
+                          postId={postId}
+                          postComment={postComment}
+                          getJWTToken={getJWTToken}
+                      />
+                    )
+                  }
                 </div>
             </div>
         )
@@ -32,14 +43,20 @@ class Comments extends React.Component {
 }
 
 export default ({postId}) => (
-    <CommentsAPI>
-        {({comments, getComments, postComment}) => (
-            <Comments
-                comments={comments.filter(c => c.status === 'approved')}
-                getComments={getComments}
-                postComment={postComment}
-                postId={postId}
-            />
-        )}
-    </CommentsAPI>
+    <AuthenticationConsumer>
+      {({getJWTToken, isAuthenticated}) => (
+        <CommentsAPI>
+            {({comments, getComments, postComment}) => (
+                <Comments
+                    comments={comments.filter(c => c.status === 'approved')}
+                    getComments={getComments}
+                    postComment={postComment}
+                    postId={postId}
+                    isAuthenticated={isAuthenticated}
+                    getJWTToken={getJWTToken}
+                />
+            )}
+        </CommentsAPI>
+      )}
+    </AuthenticationConsumer>
 )

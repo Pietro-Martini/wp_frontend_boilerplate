@@ -11,13 +11,14 @@ export class AuthenticationProvider extends React.Component {
         // random value for now
         const expirationTime = 24000000
         const tokenRecord = JSON.stringify({
-            token, timestamp: new Date().getTime() + expirationTime
+            token,
+            timestamp: new Date().getTime() + expirationTime
         })
         localStorage.setItem('token', tokenRecord)
     }
 
     logout = () => {
-        if (this.isAuthenticated) {
+        if (this.isAuthenticated()) {
             localStorage.removeItem('token')
         }
     }
@@ -37,7 +38,7 @@ export class AuthenticationProvider extends React.Component {
         const {login, logout, isAuthenticated, getJWTToken} = this
 
         return (
-            <Provider value={{login, logout, isAuthenticated}}>
+            <Provider value={{login, logout, getJWTToken, isAuthenticated}}>
                 {this.props.children}
             </Provider>
         )

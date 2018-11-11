@@ -7,10 +7,19 @@ import validationFns from '../validationFns/createCommentFormValidations'
 
 import Field from './Field'
 
-export default ({postComment, postId}) => {
+export default ({postComment, postId, getJWTToken}) => {
     return (
         <Form fields={fields} validationFns={validationFns} onSubmit={
-            body => postComment({...body, post: postId})
+            body => postComment({
+              headers: {
+                Authorization: `Bearer ${getJWTToken()}`,
+                'Content-Type': 'application/json;UTF-8'
+              },
+              body: JSON.stringify({
+                ...body,
+                post: postId
+              })
+            })
         }>
             {formState => (
                 fields.map(f => {
