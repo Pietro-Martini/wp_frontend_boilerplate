@@ -24,17 +24,17 @@ class Comments extends React.Component {
                 <ul className='comments__list'>
                     {comments.map(c => <Comment {...c} />)}
                 </ul>
-                <div className='comments__create-comment'>
                   {
                     isAuthenticated() && (
-                      <CreateCommentForm
-                          postId={postId}
-                          postComment={postComment}
-                          getJWTToken={getJWTToken}
-                      />
+                      <div className='comments__create-comment'>
+                        <CreateCommentForm
+                            postId={postId}
+                            postComment={postComment}
+                            getJWTToken={getJWTToken}
+                        />
+                      </div>
                     )
                   }
-                </div>
             </div>
         )
     }
