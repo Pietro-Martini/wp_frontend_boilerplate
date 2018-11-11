@@ -2,12 +2,14 @@ import React from 'react'
 
 import Form from '../renderProps/Form'
 
+import encodeQueryParams from '../helpers/encodeQueryParams'
+
 import fields from '../formFields/commentFormFields'
 import validationFns from '../validationFns/createCommentFormValidations'
 
 import Field from './Field'
 
-export default ({postComment, postId, getJWTToken}) => {
+export default ({postComment, getComments, postId, getJWTToken}) => {
     return (
         <Form fields={fields} validationFns={validationFns} onSubmit={
             body => postComment({
@@ -18,7 +20,8 @@ export default ({postComment, postId, getJWTToken}) => {
               body: JSON.stringify({
                 ...body,
                 post: postId
-              })
+              }),
+              successCb: res => getComments(encodeQueryParams({post: postId}))
             })
         }>
             {formState => (
