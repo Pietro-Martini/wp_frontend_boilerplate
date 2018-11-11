@@ -17,7 +17,7 @@ class Comments extends React.Component {
     }
 
     render = () => {
-        const {comments, postId, postComment, getJWTToken, isAuthenticated} = this.props
+        const {comments, postId, postComment, getComments, getJWTToken, isAuthenticated} = this.props
 
         return (
             <div className='comments'>
@@ -30,6 +30,7 @@ class Comments extends React.Component {
                         <CreateCommentForm
                             postId={postId}
                             postComment={postComment}
+                            getComments={getComments}
                             getJWTToken={getJWTToken}
                         />
                       </div>
