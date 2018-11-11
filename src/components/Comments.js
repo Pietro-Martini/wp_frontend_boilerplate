@@ -19,8 +19,6 @@ class Comments extends React.Component {
     render = () => {
         const {comments, postId, postComment, getJWTToken, isAuthenticated} = this.props
 
-        console.log(this.props)
-
         return (
             <div className='comments'>
                 <ul className='comments__list'>
