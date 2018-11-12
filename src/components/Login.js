@@ -40,12 +40,12 @@ const Login = ({postToken, login}) => {
 export default props => {
     return (
         <AuthenticationConsumer>
-            {({login, isAuthenticated}) => (
+            {({login, loggedIn}) => (
                 <AuthAPI>
                     {({postToken}) => (
                         <Login
                             login={login}
-                            isAuthenticated={isAuthenticated}
+                            loggedIn={loggedIn}
                             postToken={postToken}
                         />
                     )}
