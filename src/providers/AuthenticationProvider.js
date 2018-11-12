@@ -18,9 +18,7 @@ export class AuthenticationProvider extends React.Component {
     }
 
     logout = () => {
-        if (this.isAuthenticated()) {
-            localStorage.removeItem('token')
-        }
+        localStorage.removeItem('token')        
     }
 
     getJWTToken = () => {

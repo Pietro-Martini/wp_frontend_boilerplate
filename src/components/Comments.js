@@ -21,21 +21,21 @@ class Comments extends React.Component {
 
         return (
             <div className='comments'>
+                {
+                  isAuthenticated() && (
+                    <div className='comments__create-comment'>
+                      <CreateCommentForm
+                          postId={postId}
+                          postComment={postComment}
+                          getComments={getComments}
+                          getJWTToken={getJWTToken}
+                      />
+                    </div>
+                  )
+                }
                 <ul className='comments__list'>
                     {comments.map(c => <Comment {...c} />)}
                 </ul>
-                  {
-                    isAuthenticated() && (
-                      <div className='comments__create-comment'>
-                        <CreateCommentForm
-                            postId={postId}
-                            postComment={postComment}
-                            getComments={getComments}
-                            getJWTToken={getJWTToken}
-                        />
-                      </div>
-                    )
-                  }
             </div>
         )
     }
