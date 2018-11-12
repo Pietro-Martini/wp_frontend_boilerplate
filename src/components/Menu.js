@@ -6,7 +6,7 @@ import {AuthenticationConsumer} from '../providers/AuthenticationProvider'
 import MenuList from './MenuList'
 import MenuToggle from './MenuToggle'
 
-const Menu = ({getPage, active, toggleActiveState, logout, isAuthenticated}) => (
+const Menu = ({getPage, active, toggleActiveState, logout, loggedIn}) => (
   <nav className='menu'>
       <MenuToggle
         toggleActiveState={toggleActiveState}
@@ -15,7 +15,7 @@ const Menu = ({getPage, active, toggleActiveState, logout, isAuthenticated}) => 
         active={active}
         getPage={getPage}
         logout={logout}
-        isAuthenticated={isAuthenticated}
+        loggedIn={loggedIn}
       />
   </nav>
 )
@@ -23,7 +23,7 @@ const Menu = ({getPage, active, toggleActiveState, logout, isAuthenticated}) => 
 export default ({getPage}) => {
   return (
     <AuthenticationConsumer>
-      {({logout, isAuthenticated}) => (
+      {({logout, loggedIn}) => (
         <ActiveStateToggling>
           {(active, toggleActiveState) => (
             <Menu
@@ -31,7 +31,7 @@ export default ({getPage}) => {
               active={active}
               toggleActiveState={toggleActiveState}
               logout={logout}
-              isAuthenticated={isAuthenticated}
+              loggedIn={loggedIn}
             />
           )}
         </ActiveStateToggling>

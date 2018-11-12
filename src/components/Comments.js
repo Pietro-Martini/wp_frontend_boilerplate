@@ -17,12 +17,12 @@ class Comments extends React.Component {
     }
 
     render = () => {
-        const {comments, postId, postComment, getComments, getJWTToken, isAuthenticated} = this.props
+        const {comments, postId, postComment, getComments, getJWTToken, loggedIn} = this.props
 
         return (
             <div className='comments'>
                 {
-                  isAuthenticated() && (
+                  loggedIn && (
                     <div className='comments__create-comment'>
                       <CreateCommentForm
                           postId={postId}
@@ -43,7 +43,7 @@ class Comments extends React.Component {
 
 export default ({postId}) => (
     <AuthenticationConsumer>
-      {({getJWTToken, isAuthenticated}) => (
+      {({getJWTToken, loggedIn}) => (
         <CommentsAPI>
             {({comments, getComments, postComment}) => (
                 <Comments
@@ -51,7 +51,7 @@ export default ({postId}) => (
                     getComments={getComments}
                     postComment={postComment}
                     postId={postId}
-                    isAuthenticated={isAuthenticated}
+                    loggedIn={loggedIn}
                     getJWTToken={getJWTToken}
                 />
             )}

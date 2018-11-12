@@ -7,6 +7,18 @@ export const AuthenticationConsumer = AuthenticationContext.Consumer
 const {Provider} = AuthenticationContext
 
 export class AuthenticationProvider extends React.Component {
+    state = {
+        loggedIn: false
+    }
+
+    componentDidMount = () => {
+        const jwtToken = this.getJWTToken()
+
+        if (jwtToken) {
+            this.login(jwtToken)
+        }
+    }
+
     login = ({token}) => {
         // random value for now
         const expirationTime = 24000000
@@ -15,10 +27,13 @@ export class AuthenticationProvider extends React.Component {
             timestamp: new Date().getTime() + expirationTime
         })
         localStorage.setItem('token', tokenRecord)
+        this.setState({loggedIn: true})
     }
 
-    logout = () => {
-        localStorage.removeItem('token')        
+    logout = e => {
+        e.preventDefault()
+        localStorage.removeItem('token')
+        this.setState({loggedIn: false})
     }
 
     getJWTToken = () => {
@@ -30,13 +45,12 @@ export class AuthenticationProvider extends React.Component {
         )
     }
 
-    isAuthenticated = this.getJWTToken
-
     render () {
-        const {login, logout, isAuthenticated, getJWTToken} = this
+        const {login, logout, getJWTToken} = this
+        const {loggedIn} = this.state
 
         return (
-            <Provider value={{login, logout, getJWTToken, isAuthenticated}}>
+            <Provider value={{login, logout, getJWTToken, loggedIn}}>
                 {this.props.children}
             </Provider>
         )
