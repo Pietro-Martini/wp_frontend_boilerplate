@@ -11,7 +11,7 @@ class Main extends React.Component {
   componentDidMount = () => {
     const {getPage, getPages, history} = this.props
 
-    const initialPage = history.location.pathname.slice(1)    
+    const initialPage = history.location.pathname.slice(1)
     const queryParams = encodeQueryParams({slug: initialPage})
 
     getPage({queryParams})
@@ -19,15 +19,15 @@ class Main extends React.Component {
   }
 
   render = () => {
-    const {pages, page} = this.props
+    const {pages, page, history} = this.props
 
     const createRoutes = compose(createDefaultUrlFallback,
-      pages => pages.map(p => {
+      pages => pages.map(p => {          
         const Component = pageComponents[p.slug]
         return (
           <Route
             key={p.slug}
-            render={() => <Component page={page} />}
+            render={() => <Component page={page} history={history} />}
             path={`/${p.slug}`}
             exact
           />

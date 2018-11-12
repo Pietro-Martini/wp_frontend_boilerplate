@@ -9,7 +9,7 @@ import validationFns from '../validationFns/loginFormValidations'
 
 import fields from '../formFields/loginFormFields'
 
-const Login = ({postToken, login}) => {
+const Login = ({postToken, login, history}) => {
     return (
         <Form fields={fields} validationFns={validationFns} onSubmit={
             ({username, password}) => {
@@ -18,7 +18,10 @@ const Login = ({postToken, login}) => {
                         'Content-Type': 'application/x-www-form-urlencoded; charset=utf-8'
                     },
                     body: `password=${password}&username=${username}`,
-                    successCb: login
+                    successCb: ({token}) => {
+                        login(token)
+                        history.push('/')
+                    }
                 })
             }
         }>
@@ -37,7 +40,7 @@ const Login = ({postToken, login}) => {
     )
 }
 
-export default props => {
+export default ({history}) => {
     return (
         <AuthenticationConsumer>
             {({login, loggedIn}) => (
@@ -47,6 +50,7 @@ export default props => {
                             login={login}
                             loggedIn={loggedIn}
                             postToken={postToken}
+                            history={history}
                         />
                     )}
                 </AuthAPI>
