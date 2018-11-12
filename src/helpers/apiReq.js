@@ -1,5 +1,8 @@
 import baseUrl from '../constants/baseUrl'
-import {appResourcesUrlExtension, jwtAuthTokenUrlExtension} from '../constants/urlExtensions'
+import {
+    appResourcesUrlExtension,
+    jwtAuthTokenUrlExtension
+} from '../constants/urlExtensions'
 
 function apiReq (baseUrl) {
   return urlExtension => ({

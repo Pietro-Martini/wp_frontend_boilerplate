@@ -1,32 +1,31 @@
 import React, { Component } from 'react'
-import {apiReqAppResources, apiReqJWTAuthToken} from '../helpers/apiReq'
+import {apiReqAppResources, apiReqJWTAuthToken, apiReqCustomRoutes} from '../helpers/apiReq'
 import compose from '../helpers/compose'
 import capitalize from '../helpers/capitalize'
 
-function API ({initialState, fetchArgs, apiReqFn}) {
+function API ({initialState, reqArgs, apiReqFn}) {
     return class extends React.Component {
         constructor(props) {
             super(props)
 
-            this.actions = this.defineActions(initialState, fetchArgs)
+            this.actions = this.defineActions(initialState, reqArgs)
 
             this.state = initialState
         }
 
-        defineActions = (initialState, fetchArgs) => {
+        defineActions = (initialState, reqArgs) => {
             const httpMethods = ['get', 'post', 'put', 'delete']
 
-            return Object.keys(initialState).map((k, i) => {
+            return Object.keys(initialState).map((stateKey, i) => {
                 return {
-                    ...fetchArgs[i],
-                    stateKey: k
+                    ...reqArgs[i],
+                    stateKey
                 }
             }).reduce((actionsColl, arg, i) => {
                 const {stateKey} = arg
 
                 httpMethods.forEach(method => {
-                  const resource = capitalize(stateKey)
-                  const actionName = `${method}${resource}`
+                  const actionName = `${method}${capitalize(stateKey)}`
 
                   actionsColl[actionName] = this.fetchData({
                     ...arg,
@@ -75,7 +74,7 @@ export const PagesAPI = API({
     pages: [],
     page: {}
   },
-  fetchArgs: [
+  reqArgs: [
     {endpoint: 'pages'},
     {endpoint: 'pages', transformStateFns: [x => x[0]]}
 ],
@@ -87,7 +86,7 @@ export const PostsAPI = API({
     posts: [],
     post: {}
   },
-  fetchArgs: [
+  reqArgs: [
     {endpoint: 'posts'},
     {endpoint: 'posts', transformStateFns: [x => x[0]]}
 ],
@@ -99,7 +98,7 @@ export const CommentsAPI = API({
     comments: [],
     comment: {}
   },
-  fetchArgs: [
+  reqArgs: [
     {endpoint: 'comments'},
     {endpoint: 'comments', transformStateFns: [x => x[0]]}
 ],
@@ -110,8 +109,18 @@ export const AuthAPI = API({
     initialState: {
         token: ''
     },
-    fetchArgs: [
+    reqArgs: [
         {endpoint: 'token'}
     ],
     apiReqFn: apiReqJWTAuthToken
+})
+
+export const MenuAPI = API({
+    initialState: {
+        menuItems: []
+    },
+    reqArgs: [
+        {endpoint: 'menu-items'}
+    ],
+    apiReqFn: apiReqAppResources
 })
