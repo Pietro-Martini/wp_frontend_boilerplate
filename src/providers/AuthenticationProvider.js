@@ -19,7 +19,7 @@ export class AuthenticationProvider extends React.Component {
         }
     }
 
-    login = ({token}) => {
+    login = token => {
         // random value for now
         const expirationTime = 24000000
         const tokenRecord = JSON.stringify({
