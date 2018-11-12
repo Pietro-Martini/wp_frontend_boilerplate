@@ -1,42 +1,43 @@
 import React from 'react'
 
-import {Link} from 'react-router-dom'
-
-import encodeQueryParams from '../helpers/encodeQueryParams'
 import ActiveStateToggling from '../renderProps/ActiveStateToggling'
+import {AuthenticationConsumer} from '../providers/AuthenticationProvider'
 
-const Menu = ({pages, getPage}) => (
-    <ActiveStateToggling>
-        {({active, toggleActiveState}) => (
-            <nav className='menu'>
-                <div
-                    className='menu__toggle'
-                    onClick={toggleActiveState}
-                >
-                    Toggle Menu
-                </div>
-                <ul className={`menu__list ${active ? 'active' : ''}`}>
-                    {createMenuItems(pages, getPage)}
-                </ul>
-            </nav>
-        )}
-    </ActiveStateToggling>
+import MenuList from './MenuList'
+import MenuToggle from './MenuToggle'
+
+const Menu = ({pages, getPage, active, toggleActiveState, logout, isAuthenticated}) => (
+  <nav className='menu'>
+      <MenuToggle
+        toggleActiveState={toggleActiveState}
+      />
+      <MenuList
+        pages={pages}
+        active={active}
+        getPage={getPage}
+        logout={logout}
+        isAuthenticated={isAuthenticated}
+      />
+  </nav>
 )
 
-const createMenuItems = (pages, getPage) => pages.map(({title, slug}) => {
+export default ({pages, getPage}) => {
   return (
-    <li
-        className='menu__item'
-        onClick={e => getPage({queryParams: encodeQueryParams({slug})})}
-    >
-      <Link
-        key={slug}
-        to={`/${slug}`}
-      >
-        {title.rendered}
-      </Link>
-    </li>
+    <AuthenticationConsumer>
+      {({logout, isAuthenticated}) => (
+        <ActiveStateToggling>
+          {(active, toggleActiveState) => (
+            <Menu
+              pages={pages}
+              getPage={getPage}
+              active={active}
+              toggleActiveState={toggleActiveState}
+              logout={logout}
+              isAuthenticated={isAuthenticated}
+            />
+          )}
+        </ActiveStateToggling>
+      )}
+    </AuthenticationConsumer>
   )
-})
-
-export default Menu
+}

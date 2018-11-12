@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import {apiReqAppResources, apiReqJWTAuthToken} from '../helpers/apiReq'
 import compose from '../helpers/compose'
+import capitalize from '../helpers/capitalize'
 
 function API ({initialState, fetchArgs, apiReqFn}) {
     return class extends React.Component {
@@ -24,7 +25,7 @@ function API ({initialState, fetchArgs, apiReqFn}) {
                 const {stateKey} = arg
 
                 httpMethods.forEach(method => {
-                  const resource = `${stateKey[0].toUpperCase()}${stateKey.slice(1)}`
+                  const resource = capitalize(stateKey)
                   const actionName = `${method}${resource}`
 
                   actionsColl[actionName] = this.fetchData({
