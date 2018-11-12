@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import {apiReqAppResources, apiReqJWTAuthToken} from '../helpers/apiReq'
+import {apiReqAppResources, apiReqJWTAuthToken, apiReqCustomRoutes} from '../helpers/apiReq'
 import compose from '../helpers/compose'
 import capitalize from '../helpers/capitalize'
 
@@ -25,8 +25,7 @@ function API ({initialState, fetchArgs, apiReqFn}) {
                 const {stateKey} = arg
 
                 httpMethods.forEach(method => {
-                  const resource = capitalize(stateKey)
-                  const actionName = `${method}${resource}`
+                  const actionName = `${method}${capitalize(stateKey)}`
 
                   actionsColl[actionName] = this.fetchData({
                     ...arg,
@@ -114,4 +113,14 @@ export const AuthAPI = API({
         {endpoint: 'token'}
     ],
     apiReqFn: apiReqJWTAuthToken
+})
+
+export const MenuAPI = API({
+    initialState: {
+        menuItems: []
+    },
+    fetchArgs: [
+        {endpoint: 'menu-items'}
+    ],
+    apiReqFn: apiReqAppResources
 })
