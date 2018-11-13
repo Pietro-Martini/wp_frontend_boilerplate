@@ -8,31 +8,27 @@ function API ({initialState, reqArgs, apiReqFn}) {
         constructor(props) {
             super(props)
 
-            this.actions = this.defineActions(initialState, reqArgs)
+            const stateKeys = Object.keys(initialState)
 
-            this.state = initialState
+            this.actions = this.defineActions(stateKeys, reqArgs)
+
+            this.state = Object.assign({}, initialState, {
+                apiError: ''
+            })
         }
 
-        defineActions = (initialState, reqArgs) => {
+        defineActions = (stateKeys, reqArgs) => {
             const httpMethods = ['get', 'post', 'put', 'delete']
 
-            return Object.keys(initialState).map((stateKey, i) => {
-                return {
-                    ...reqArgs[i],
-                    stateKey
-                }
-            }).reduce((actionsColl, arg, i) => {
-                const {stateKey} = arg
-
+            return stateKeys.reduce((actionsColl, stateKey, i) => {
+                const argsForRequest = {...reqArgs[i], stateKey}
                 httpMethods.forEach(method => {
                   const actionName = `${method}${capitalize(stateKey)}`
-
                   actionsColl[actionName] = this.fetchData({
-                    ...arg,
+                    ...argsForRequest,
                     method: method.toUpperCase()
                   })
                 })
-
                 return actionsColl
             }, {})
         }
@@ -57,6 +53,9 @@ function API ({initialState, reqArgs, apiReqFn}) {
                         this.setDataFetching(false)
                         this.updateState(stateKey, newState)
                         successCb && successCb(res)
+                    },
+                    errorFn: err => {
+                        console.log(err.message)
                     }
                 })
         }

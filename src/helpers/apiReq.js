@@ -19,6 +19,7 @@ function apiReq (baseUrl) {
     )
     .then(res => res.json())
     .then(successFn)
+    .catch(errorFn)
   }
 }
 

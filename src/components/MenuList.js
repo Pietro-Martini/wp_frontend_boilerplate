@@ -23,20 +23,18 @@ class MenuList extends React.Component {
                       <MenuLink {...item} getPage={getPage} />
                   </MenuItem>
                 ))}
-                {createAccountLink(logout, loggedIn)}
+                <MenuItem>
+                    {createAccountLink(logout, loggedIn)}
+                </MenuItem>
           </ul>
       )
   }
 }
 
 const createAccountLink = (logout, loggedIn) => (
-    <MenuItem>
-        {
-            !loggedIn
-            ? <Link to='/login'>Login</Link>
-            : <a href='/logout' onClick={logout}>Logout</a>
-        }
-    </MenuItem>
+    !loggedIn
+    ? <Link to='/login'>Login</Link>
+    : <a href='/logout' onClick={logout}>Logout</a>
 )
 
 export default props => (
