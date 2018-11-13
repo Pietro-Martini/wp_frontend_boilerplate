@@ -17,7 +17,7 @@ class Comments extends React.Component {
     }
 
     render = () => {
-        const {comments, postId, postComment, getComments, getJWTToken, loggedIn, postError} = this.props
+        const {comments, postId, postComment, getComments, getJWTToken, loggedIn} = this.props
 
         return (
             <div className='comments'>
@@ -29,7 +29,6 @@ class Comments extends React.Component {
                           postComment={postComment}
                           getComments={getComments}
                           getJWTToken={getJWTToken}
-                          postError={postError}
                       />
                     </div>
                   )
@@ -46,15 +45,14 @@ export default ({postId}) => (
     <AuthenticationConsumer>
       {({getJWTToken, loggedIn}) => (
         <CommentsAPI>
-            {({comments, getComments, postComment, postError}) => (
+            {({comments, getComments, postComment}) => (
                 <Comments
                     comments={comments.filter(c => c.status === 'approved')}
                     getComments={getComments}
                     postComment={postComment}
                     postId={postId}
                     loggedIn={loggedIn}
-                    getJWTToken={getJWTToken}
-                    postError={postError}
+                    getJWTToken={getJWTToken}                    
                 />
             )}
         </CommentsAPI>

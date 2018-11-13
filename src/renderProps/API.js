@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import {apiReqAppResources, apiReqJWTAuthToken, apiReqCustomRoutes} from '../helpers/apiReq'
 import compose from '../helpers/compose'
+import includes from '../helpers/includes'
 import capitalize from '../helpers/capitalize'
 
 const HTTP_METHODS = ['get', 'post', 'put', 'delete']
@@ -64,10 +65,26 @@ function API ({initialState, reqArgs, apiReqFn}) {
                 })
         }
 
+        displayHTTPErrors = state => {
+            const errorKeys = Object.keys(state).filter(sKey => includes(sKey, 'Error'))
+
+            return errorKeys.reduce((errorColl, eKey) => {
+                const error = state[eKey]
+                return error
+                ? errorColl.concat(<p>{error}</p>)
+                : errorColl
+            }, [])
+        }
+
         render = () => {
             const mergedProps = {...this.state, ...this.actions}
 
-            return this.props.children(mergedProps)
+            return (
+                <React.Fragment>
+                    {this.props.children(mergedProps)}
+                    {this.displayHTTPErrors(this.state)}
+                </React.Fragment>
+            )
         }
     }
 }
