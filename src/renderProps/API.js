@@ -38,11 +38,6 @@ function API ({initialState, reqArgs, apiReqFn}) {
 
         setDataFetching = shown => this.setState({dataFetching: shown})
 
-        updateState = (stateKey, newState) => {
-            this.setDataFetching(false)
-            this.setState({[stateKey]: newState})
-        }
-
         fetchData = ({endpoint, stateKey, method, transformStateFns}) =>
             ({queryParams = '', body, headers, successCb, errorCb} = {}) => {
                 this.setDataFetching(true)
