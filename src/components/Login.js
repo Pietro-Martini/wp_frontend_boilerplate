@@ -18,7 +18,7 @@ const Login = ({postToken, login, history}) => {
                         'Content-Type': 'application/x-www-form-urlencoded; charset=utf-8'
                     },
                     body: `password=${password}&username=${username}`,
-                    successCb: ({token}) => {
+                    successCb: ({token}) => {                        
                         login(token)
                         history.push('/')
                     }

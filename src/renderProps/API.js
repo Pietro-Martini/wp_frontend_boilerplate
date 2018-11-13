@@ -3,6 +3,8 @@ import {apiReqAppResources, apiReqJWTAuthToken, apiReqCustomRoutes} from '../hel
 import compose from '../helpers/compose'
 import capitalize from '../helpers/capitalize'
 
+const HTTP_METHODS = ['get', 'post', 'put', 'delete']
+
 function API ({initialState, reqArgs, apiReqFn}) {
     return class extends React.Component {
         constructor(props) {
@@ -12,17 +14,18 @@ function API ({initialState, reqArgs, apiReqFn}) {
 
             this.actions = this.defineActions(stateKeys, reqArgs)
 
-            this.state = Object.assign({}, initialState, {
-                apiError: ''
-            })
+            const errorsState = HTTP_METHODS.reduce((httpErrorMethodColl, m) => {
+                httpErrorMethodColl[`${m}Error`] = ''
+                return httpErrorMethodColl
+            }, {})
+
+            this.state = {...initialState, ...errorsState}
         }
 
         defineActions = (stateKeys, reqArgs) => {
-            const httpMethods = ['get', 'post', 'put', 'delete']
-
             return stateKeys.reduce((actionsColl, stateKey, i) => {
                 const argsForRequest = {...reqArgs[i], stateKey}
-                httpMethods.forEach(method => {
+                HTTP_METHODS.forEach(method => {
                   const actionName = `${method}${capitalize(stateKey)}`
                   actionsColl[actionName] = this.fetchData({
                     ...argsForRequest,
@@ -41,21 +44,27 @@ function API ({initialState, reqArgs, apiReqFn}) {
         }
 
         fetchData = ({endpoint, stateKey, method, transformStateFns}) =>
-            ({queryParams = '', body, headers, successCb} = {}) => {
+            ({queryParams = '', body, headers, successCb, errorCb} = {}) => {
                 this.setDataFetching(true)
                 apiReqFn({
                     endpoint: `${endpoint}${queryParams}`,
                     method,
                     body,
                     headers,
-                    successFn: res => {
-                        const newState = transformStateFns && compose(...transformStateFns)(res) || res
-                        this.setDataFetching(false)
-                        this.updateState(stateKey, newState)
-                        successCb && successCb(res)
-                    },
-                    errorFn: err => {
-                        console.log(err.message)
+                    fn: res => {
+                        if (res.data && res.data.status === 401) {
+                            const httpErrorMsg = `${method.toLowerCase()}Error`
+
+                            this.setState({[httpErrorMsg]: res.message}, () => {
+                                errorCb && errorCb(res.message)
+                            })
+                        } else {
+                            const newState = transformStateFns && compose(...transformStateFns)(res) || res
+                            this.setDataFetching(false)
+                            this.setState({[stateKey]: newState}, () => {
+                                successCb && successCb(res)
+                            })
+                        }
                     }
                 })
         }

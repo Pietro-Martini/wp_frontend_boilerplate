@@ -10,16 +10,14 @@ function apiReq (baseUrl) {
       headers,
       body,
       method,
-      successFn,
-      errorFn
+      fn
   }) => {
-    return fetch(
-        `${baseUrl}${urlExtension}${endpoint}`,
-        {method, body, headers}
-    )
+      const url = `${baseUrl}${urlExtension}${endpoint}`
+      const fetchArgs = {method, body, headers}
+
+    fetch(url, fetchArgs)
     .then(res => res.json())
-    .then(successFn)
-    .catch(errorFn)
+    .then(fn)
   }
 }
 

@@ -50,13 +50,14 @@ export default class Form extends React.Component {
     }
 
     render = () => {
-        const {children} = this.props
+        const {children, error} = this.props
         const {state} = this
 
         return (
             <form onChange={this.onFieldChange} onSubmit={this.handleSubmit}>
                 {children(this.state)}
                 <input type='submit' value='Submit' disabled={this.checkForInvalidEntries(state)} />
+                {error && <p className='error'>{error}</p>}
             </form>
         )
     }

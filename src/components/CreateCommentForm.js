@@ -9,7 +9,7 @@ import validationFns from '../validationFns/createCommentFormValidations'
 
 import Field from './Field'
 
-export default ({postComment, getComments, postId, getJWTToken}) => {
+export default ({postComment, getComments, postId, getJWTToken, postError}) => {
     return (
         <Form fields={fields} validationFns={validationFns} onSubmit={
             body => postComment({
@@ -23,7 +23,7 @@ export default ({postComment, getComments, postId, getJWTToken}) => {
               }),
               successCb: () => getComments(encodeQueryParams({post: postId}))
             })
-        }>
+        } error={postError}>
             {formState => (
                 fields.map(f => {
                     const fieldName = f.name
