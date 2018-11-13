@@ -48,7 +48,7 @@ function API ({initialState, reqArgs, apiReqFn}) {
                     headers,
                     fn: res => {
                         this.setDataFetching(false)
-                        if (res.data && res.data.status === 401) {
+                        if (res.data && res.data.status !== 200) {
                             const httpErrorMsg = `${method.toLowerCase()}Error`
 
                             this.setState({[httpErrorMsg]: res.message}, () => {
