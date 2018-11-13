@@ -47,6 +47,7 @@ function API ({initialState, reqArgs, apiReqFn}) {
                     body,
                     headers,
                     fn: res => {
+                        this.setDataFetching(false)
                         if (res.data && res.data.status === 401) {
                             const httpErrorMsg = `${method.toLowerCase()}Error`
 
@@ -55,7 +56,6 @@ function API ({initialState, reqArgs, apiReqFn}) {
                             })
                         } else {
                             const newState = transformStateFns && compose(...transformStateFns)(res) || res
-                            this.setDataFetching(false)
                             this.setState({[stateKey]: newState}, () => {
                                 successCb && successCb(res)
                             })
