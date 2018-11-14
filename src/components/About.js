@@ -2,9 +2,9 @@ import React from 'react'
 
 import Posts from './Posts'
 
-const About = () => (
+const About = ({setDataFetching}) => (
     <div className='about'>
-        <Posts/>
+        <Posts setDataFetching={setDataFetching}/>
     </div>
 )
 

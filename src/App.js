@@ -11,6 +11,7 @@ import Home from './components/Home'
 
 import {BrowserRouter as Router, Route} from 'react-router-dom'
 import {PagesAPI} from './renderProps/API'
+import UI from './renderProps/UI'
 
 import {AuthenticationProvider} from './providers/AuthenticationProvider'
 
@@ -20,16 +21,20 @@ class App extends Component {
       <Router>
           <Route path='*' render={({history}) => (
               <AuthenticationProvider>
-                  <PagesAPI>
-                      {pageAPI => (
-                          <div className='app'>
-                            <Header {...pageAPI} />
-                            <Loader {...pageAPI} />
-                            <Main {...pageAPI} history={history} />
-                            <Footer />
-                          </div>
+                  <UI>
+                      {({dataFetching, setDataFetching}) => (
+                          <PagesAPI setDataFetching={setDataFetching}>
+                              {pageAPI => (
+                                  <div className='app'>
+                                    <Header {...pageAPI} setDataFetching={setDataFetching} />
+                                    <Loader {...pageAPI} dataFetching={dataFetching} />
+                                    <Main {...pageAPI} history={history} setDataFetching={setDataFetching} />
+                                    <Footer />
+                                  </div>
+                              )}
+                          </PagesAPI>
                       )}
-                  </PagesAPI>
+                  </UI>
               </AuthenticationProvider>
           )} />
       </Router>

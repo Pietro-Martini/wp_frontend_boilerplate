@@ -1,6 +1,6 @@
 import React from 'react'
 
-import Form from '../renderProps/Form'
+import {CreateCommentForm} from '../renderProps/Form'
 
 import encodeQueryParams from '../helpers/encodeQueryParams'
 
@@ -9,7 +9,7 @@ import validationFns from '../validationFns/createCommentFormValidations'
 
 import Field from './Field'
 
-const CreateCommentForm = ({formState, fields}) => (
+const CreateCommentFormComponent = ({formState, fields}) => (
     fields.map(f => {
         const fieldName = f.name
         return (
@@ -21,21 +21,23 @@ const CreateCommentForm = ({formState, fields}) => (
     })
 )
 
-export default ({postComment, getComments, postId, getJWTToken}) => (
-    <Form fields={fields} validationFns={validationFns} onSubmit={
-        body => postComment({
-          headers: {
-            Authorization: `Bearer ${getJWTToken()}`,
-            'Content-Type': 'application/json;UTF-8'
-          },
-          body: JSON.stringify({
-            ...body,
-            post: postId
-          }),
-          successCb: () => getComments(encodeQueryParams({post: postId}))
-        })
-    }>
-        {formState => <CreateCommentForm fields={fields} formState={formState}/>}
-    </Form>
+export default ({postComment, getComments, postId, getJWTToken}) => {
 
-)
+    return (
+        <CreateCommentForm fields={fields} onSubmit={handleCreateCommentFormSubmission}>
+            {formState => <CreateCommentFormComponent fields={fields} formState={formState}/>}
+        </CreateCommentForm>
+    )
+
+    const handleCreateCommentFormSubmission = body => postComment({
+      headers: {
+        Authorization: `Bearer ${getJWTToken()}`,
+        'Content-Type': 'application/json;UTF-8'
+      },
+      body: JSON.stringify({
+        ...body,
+        post: postId
+      }),
+      successCb: () => getComments(encodeQueryParams({post: postId}))
+    })
+}

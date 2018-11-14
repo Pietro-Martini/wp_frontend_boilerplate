@@ -19,15 +19,21 @@ class Main extends React.Component {
   }
 
   render = () => {
-    const {pages, page, history} = this.props
+    const {pages, page, history, setDataFetching} = this.props
 
     const createRoutes = compose(createDefaultUrlFallback,
-      pages => pages.map(p => {          
+      pages => pages.map(p => {
         const Component = pageComponents[p.slug]
         return (
           <Route
             key={p.slug}
-            render={() => <Component page={page} history={history} />}
+            render={() => (
+                <Component
+                    page={page}
+                    history={history}
+                    setDataFetching={setDataFetching}
+                />
+            )}
             path={`/${p.slug}`}
             exact
           />

@@ -38,7 +38,7 @@ const createAccountLink = (logout, loggedIn) => (
 )
 
 export default props => (
-    <MenuAPI>
+    <MenuAPI setDataFetching={props.setDataFetching}>
         {({menuItems, getMenuItems}) => (
             <MenuList {...props}
                 menuItems={menuItems }
