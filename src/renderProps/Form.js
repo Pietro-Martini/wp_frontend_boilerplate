@@ -56,8 +56,7 @@ export default class Form extends React.Component {
         return (
             <form onChange={this.onFieldChange} onSubmit={this.handleSubmit}>
                 {children(this.state)}
-                <input type='submit' value='Submit' disabled={this.checkForInvalidEntries(state)} />
-                {error && <p className='error'>{error}</p>}
+                <input type='submit' value='Submit' disabled={this.checkForInvalidEntries(state)} />                
             </form>
         )
     }
