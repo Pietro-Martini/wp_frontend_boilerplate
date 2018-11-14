@@ -7,7 +7,7 @@ import capitalize from '../helpers/capitalize'
 const HTTP_METHODS = ['get', 'post', 'put', 'delete']
 
 function API ({initialState, reqArgs, apiReqFn}) {
-    return class extends React.Component {
+    return class API extends React.Component {
         constructor(props) {
             super(props)
 
@@ -35,20 +35,18 @@ function API ({initialState, reqArgs, apiReqFn}) {
                 })
                 return actionsColl
             }, {})
-        }
-
-        setDataFetching = shown => this.setState({dataFetching: shown})
+        }        
 
         fetchData = ({endpoint, stateKey, method, transformStateFns}) =>
             ({queryParams = '', body, headers, successCb, errorCb} = {}) => {
-                this.setDataFetching(true)
+                this.props.setDataFetching(true)
                 apiReqFn({
                     endpoint: `${endpoint}${queryParams}`,
                     method,
                     body,
                     headers,
                     fn: res => {
-                        this.setDataFetching(false)
+                        this.props.setDataFetching(false)
                         if (res.data && res.data.status !== 200) {
                             const httpErrorMsg = `${method.toLowerCase()}Error`
 

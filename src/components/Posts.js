@@ -8,24 +8,27 @@ class Posts extends React.Component {
   componentDidMount = this.props.getPosts
 
   render = () => {
+    const {setDataFetching} = this.props
+
     return (
         <div className='posts'>
             <ul className='posts__list'>
-                {this.props.posts.map(p => <Post {...p} />)}
+                {this.props.posts.map(p => <Post setDataFetching={setDataFetching} {...p} />)}
             </ul>
         </div>
     )
   }
 }
 
-export default function (props) {
+export default function ({setDataFetching}) {
     return (
-        <PostsAPI>
+        <PostsAPI setDataFetching={setDataFetching}>
             {({posts, getPosts}) => {
                 return (
                     <Posts
                         posts={posts}
                         getPosts={getPosts}
+                        setDataFetching={setDataFetching}
                     />
                 )
             }}

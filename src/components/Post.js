@@ -2,17 +2,16 @@ import React from 'react'
 
 import Comments from './Comments'
 
-export default (props) => {
-    const postId = props.id
-
+export default ({id, title, content, setDataFetching}) => {
     return (
         <li className='post'>
             <div className='post__body'>
-                <h1 className='post__title'>{props.title}</h1>
-                <p className='post__content'>{props.content}</p>
+                <h1 className='post__title'>{title}</h1>
+                <p className='post__content'>{content}</p>
             </div>
             <Comments
-                postId={postId}
+                postId={id}
+                setDataFetching={setDataFetching}
             />
         </li>
     )
