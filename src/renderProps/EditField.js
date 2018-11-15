@@ -8,62 +8,44 @@ export default class EditComponent extends React.Component {
         this.state = this.setEditFieldInitialState(this.props.children)
     }
 
-    toggleEditMode = mode => className => {
-        this.setState({
-            ...this.state,
-            [className]: {
-                ...this.state[className],
-                editing: mode
-            }
-        })
+    toggleEditMode = mode => fn => {
+        this.setState(
+            {...this.state, editing: mode },
+            () => fn && fn(this.state.content)
+        )
     }
 
     activateEditMode = this.toggleEditMode(true)
     deactivateEditMode = this.toggleEditMode(false)
 
-    setEditFieldInitialState = children => {
-        const {fieldsToEditClassNames} = this.props
+    handleChange = newContent => this.setState({...this.state, content: newContent})
 
-        return React.Children.toArray(children).reduce((initialState, child) => {
-            const {className} = child.props
-            if (includes(fieldsToEditClassNames, className)) {
-                initialState[className] = {
-                    content: child.props.children,
-                    editing: false
-                }
-            }
-            return initialState
-        }, {})
+    setEditFieldInitialState = child => {
+        return {
+            content: child.props.children,
+            editing: false
+        }
     }
 
     render = () => {
-        const {fieldsToEditClassNames, children} = this.props
+        const {editing, content} = this.state
+        const child = this.props.children
 
-        return React.Children.map(children, child => {
-            const {className} = child.props
-            const isEditable = includes(fieldsToEditClassNames, className)
-
-            if (isEditable) {
-                const {editing, content} = this.state[className]
-
-                if (editing) {
-                    return (
-                        <React.Fragment>
-                            {React.createElement('input', {type: 'text', value: content})}
-                            <button onClick={this.deactivateEditMode.bind(this, className)}>Finish Editing</button>
-                        </React.Fragment>
-                    )
-                } else {
-                    return (
-                        <React.Fragment>
-                            {child}
-                            <button onClick={this.activateEditMode.bind(this, className)}>Edit</button>
-                        </React.Fragment>
-                    )
-                }
-            }
-
-            return child
-        })
+        if (editing) {
+            return (
+                <React.Fragment>
+                    {React.createElement('input', {type: 'text', value: content, onChange: e => this.handleChange(e.target.value)})}
+                    <button onClick={() => this.deactivateEditMode(this.props.afterEditFn)}>Finish Editing</button>
+                    <button onClick={() => this.deactivateEditMode()}>Cancel</button>
+                </React.Fragment>
+            )
+        } else {
+            return (
+                <React.Fragment>
+                    {child}
+                    <button onClick={() => this.activateEditMode()}>Edit</button>
+                </React.Fragment>
+            )
+        }
     }
 }
