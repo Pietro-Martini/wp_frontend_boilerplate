@@ -4,27 +4,29 @@ import EditField from '../renderProps/EditField'
 
 import encodeQueryParams from '../helpers/encodeQueryParams'
 
-const Comment = ({author_name, content, author, status, date, updateComment}) => {
+const Comment = ({author_name, content, author, status, date, updateComment, removeComment}) => {
     return (
         <li className='comment'>
+            <span className='comment__date'>{date}</span>
             <h1 className='comment__author'>{author_name}</h1>
             <EditField afterEditFn={updateComment}>
                 <p className='comment__content'>{content}</p>
             </EditField>
-            <span className='comment__date'>{date}</span>
+            <button onClick={removeComment}>Delete</button>
         </li>
     )
 }
 
 export default props => {
-    const {id, putComment, getComments, postId, getJWTToken} = props
+    const {id, putComment, deleteComment, getComments, postId, getJWTToken} = props
+
+    const jwtToken = getJWTToken()
 
     const updateComment = updatedContent => {
         putComment({
             queryParams: `/${id}`,
             headers: {
-              Authorization: `Bearer ${getJWTToken()}`,
-              'Content-Type': 'application/json;UTF-8'
+              Authorization: `Bearer ${jwtToken}`,
           },
             body: JSON.stringify({
                 content: updatedContent,
@@ -34,7 +36,20 @@ export default props => {
         })
     }
 
+    const removeComment = () => {
+        deleteComment({
+            queryParams: `/${id}`,
+            headers: {
+              Authorization: `Bearer ${jwtToken}`,
+          },
+            successCb: () => getComments(encodeQueryParams({postId}))
+        })
+    }
+
     return (
-        <Comment {...props} updateComment={updateComment} />
+        <Comment {...props}
+            updateComment={updateComment}
+            removeComment={removeComment}
+        />
     )
 }
