@@ -9,10 +9,7 @@ const Comment = ({author_name, content, author, status, date, updateComment, rem
         <li className='comment'>
             <span className='comment__date'>{date}</span>
             <h1 className='comment__author'>{author_name}</h1>
-            <EditField afterEditFn={(newState) => {
-                console.log(newState)
-                updateComment(newState)
-            }}>
+            <EditField afterEditFn={updateComment}>
                 <p className='comment__content'>{content}</p>
             </EditField>
             <button onClick={removeComment}>Delete</button>
@@ -25,8 +22,6 @@ export default props => {
 
     const jwtToken = getJWTToken()
     const successGetQueryParams = encodeQueryParams({postId})
-
-    console.log(id)
 
     const updateComment = updatedContent => {
         putComment({
