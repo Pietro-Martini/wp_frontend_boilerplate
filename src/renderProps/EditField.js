@@ -27,21 +27,19 @@ export default class EditComponent extends React.Component {
         const {editing, content} = this.state
         const child = this.props.children
 
-        if (editing) {
-            return (
-                <React.Fragment>
-                    {React.createElement('input', {type: 'text', value: content, onChange: e => this.handleChange(e.target.value)})}
-                    <button onClick={() => this.deactivateEditMode(this.props.afterEditFn)}>Finish Editing</button>
-                    <button onClick={() => this.deactivateEditMode()}>Cancel</button>
-                </React.Fragment>
-            )
-        } else {
-            return (
-                <React.Fragment>
-                    {child}
-                    <button onClick={() => this.activateEditMode()}>Edit</button>
-                </React.Fragment>
-            )
-        }
+        return editing
+        ? (
+            <React.Fragment>
+                {React.createElement('input', {type: 'text', value: content, onChange: e => this.handleChange(e.target.value)})}
+                <button onClick={() => this.deactivateEditMode(this.props.afterEditFn)}>Finish Editing</button>
+                <button onClick={() => this.deactivateEditMode()}>Cancel</button>
+            </React.Fragment>
+        )
+        : (
+            <React.Fragment>
+                {child}
+                <button onClick={() => this.activateEditMode()}>Edit</button>
+            </React.Fragment>
+        )
     }
 }
