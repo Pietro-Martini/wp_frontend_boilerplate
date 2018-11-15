@@ -21,6 +21,7 @@ export default props => {
     const {id, putComment, deleteComment, getComments, postId, getJWTToken} = props
 
     const jwtToken = getJWTToken()
+    const successGetQueryParams = encodeQueryParams({postId})
 
     const updateComment = updatedContent => {
         putComment({
@@ -32,7 +33,7 @@ export default props => {
                 content: updatedContent,
                 post: postId
             }),
-            successCb: () => getComments(encodeQueryParams({postId})),
+            successCb: () => getComments(successGetQueryParams),
         })
     }
 
@@ -42,7 +43,7 @@ export default props => {
             headers: {
               Authorization: `Bearer ${jwtToken}`,
           },
-            successCb: () => getComments(encodeQueryParams({postId}))
+            successCb: () => getComments(successGetQueryParams)
         })
     }
 
