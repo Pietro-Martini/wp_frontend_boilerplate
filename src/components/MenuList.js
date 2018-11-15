@@ -19,7 +19,7 @@ class MenuList extends React.Component {
       return (
           <ul className={`menu__list ${active ? 'active' : ''}`}>
               {menuItems.map(item => (
-                  <MenuItem>
+                  <MenuItem key={item.title}>
                       <MenuLink {...item} getPage={getPage} />
                   </MenuItem>
                 ))}

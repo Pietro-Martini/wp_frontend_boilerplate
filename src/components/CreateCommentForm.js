@@ -14,6 +14,7 @@ const CreateCommentFormComponent = ({formState, fields}) => (
         const fieldName = f.name
         return (
             <Field {...f}
+                key={fieldName}
                 value={formState[fieldName].value}
                 errors={formState[fieldName].errors}
             />

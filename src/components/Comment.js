@@ -4,9 +4,9 @@ import EditField from '../renderProps/EditField'
 
 import encodeQueryParams from '../helpers/encodeQueryParams'
 
-const Comment = ({author_name, content, author, status, date, updateComment, removeComment}) => {
+const Comment = ({id, author_name, content, author, status, date, updateComment, removeComment}) => {
     return (
-        <li className='comment'>
+        <li className='comment' key={id}>
             <span className='comment__date'>{date}</span>
             <h1 className='comment__author'>{author_name}</h1>
             <EditField afterEditFn={updateComment}>

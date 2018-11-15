@@ -36,6 +36,7 @@ class Comments extends React.Component {
                 <ul className='comments__list'>
                     {comments.map(c => (
                         <Comment {...c}
+                            key={c.id}
                             deleteComment={deleteComment}
                             putComment={putComment}
                             postId={postId}

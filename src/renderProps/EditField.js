@@ -5,7 +5,10 @@ export default class EditComponent extends React.Component {
     constructor(props) {
         super(props)
 
-        this.state = this.setEditFieldInitialState(this.props.children)
+        this.state = {
+            content: this.props.children.props.children,
+            editing: false
+        }
     }
 
     toggleEditMode = mode => fn => {
@@ -19,13 +22,6 @@ export default class EditComponent extends React.Component {
     deactivateEditMode = this.toggleEditMode(false)
 
     handleChange = newContent => this.setState({...this.state, content: newContent})
-
-    setEditFieldInitialState = child => {
-        return {
-            content: child.props.children,
-            editing: false
-        }
-    }
 
     render = () => {
         const {editing, content} = this.state

@@ -13,7 +13,13 @@ class Posts extends React.Component {
     return (
         <div className='posts'>
             <ul className='posts__list'>
-                {this.props.posts.map(p => <Post setDataFetching={setDataFetching} {...p} />)}
+                {this.props.posts.map(p => (
+                    <Post
+                        key={p.id}
+                        {...p}
+                        setDataFetching={setDataFetching}
+                    />
+                ))}
             </ul>
         </div>
     )
