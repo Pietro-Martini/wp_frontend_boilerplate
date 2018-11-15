@@ -24,20 +24,18 @@ const CreateCommentFormComponent = ({formState, fields}) => (
 export default ({postComment, getComments, postId, getJWTToken}) => {
 
     return (
-        <CreateCommentForm fields={fields} onSubmit={handleCreateCommentFormSubmission}>
+        <CreateCommentForm fields={fields} onSubmit={body => postComment({
+          headers: {
+            Authorization: `Bearer ${getJWTToken()}`,
+            'Content-Type': 'application/json;UTF-8'
+          },
+          body: JSON.stringify({
+            ...body,
+            post: postId
+          }),
+          successCb: () => getComments(encodeQueryParams({post: postId}))
+        })}>
             {formState => <CreateCommentFormComponent fields={fields} formState={formState}/>}
         </CreateCommentForm>
     )
-
-    const handleCreateCommentFormSubmission = body => postComment({
-      headers: {
-        Authorization: `Bearer ${getJWTToken()}`,
-        'Content-Type': 'application/json;UTF-8'
-      },
-      body: JSON.stringify({
-        ...body,
-        post: postId
-      }),
-      successCb: () => getComments(encodeQueryParams({post: postId}))
-    })
 }
