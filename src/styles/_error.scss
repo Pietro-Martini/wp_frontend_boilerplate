@@ -1,0 +1,12 @@
+.error {
+  min-height: 2rem;
+  display: flex;
+  align-items: center;
+  background: red;
+  padding: 1rem;
+  background: $warning-color;
+
+  p {
+    color: $white;
+  }
+}

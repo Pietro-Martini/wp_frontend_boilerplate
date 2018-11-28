@@ -1,0 +1,38 @@
+html {
+  font-size: 62.5%;
+}
+
+.app {
+  display: flex;
+  min-height: 100vh;
+  flex-direction: column;
+}
+
+.main {
+  flex: 1;
+}
+
+// Variables
+
+@import 'colors';
+
+// Mixins
+
+@import 'mq';
+
+// Animations
+
+@import 'animations';
+
+// Components
+
+@import 'base';
+@import 'loader';
+@import 'header';
+@import 'btn';
+@import 'footer';
+@import 'search';
+@import 'menu';
+@import 'reset';
+@import 'container';
+@import 'error';
