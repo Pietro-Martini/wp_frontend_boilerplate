@@ -1,0 +1,22 @@
+@mixin grid($gutter-width, $trigger-width) {
+		@for $i from 1 through 12 {
+		.col-#{$i} {
+			display: flex;
+			flex-wrap: wrap;			
+
+			@include mq($trigger-width) {
+					$col-width: 100% / $i;
+
+					> * {
+					flex: 0 0 $col-width;
+
+					:not(#{$i}n) {
+						margin-right: $gutter-width;
+					}
+				}
+			}		
+		}
+	}
+}
+
+@include grid(1rem, $desktop);

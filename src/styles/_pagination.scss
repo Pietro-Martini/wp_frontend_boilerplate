@@ -1,0 +1,20 @@
+.pagination {
+	width: 100%;
+	display: flex;
+
+	> * {		
+		&:not(:last-child) {
+			margin-right: 1rem;
+		}
+	}
+
+	&__list {
+		display: flex;
+
+		> * {
+			&:not(:last-child) {
+				margin-right: 1rem;
+			}
+		}
+	}
+}

@@ -4,7 +4,7 @@ import {Link} from 'react-router-dom'
 
 export default ({searchResults, searchResultsResetState, toggleActiveState}) => {
   return (
-    <ul className='search-list'>
+    <ul className='search-list col-3'>
       {searchResults.results.map(({title, slug}) => (
         <li key={slug} onClick={toggleActiveState}>
           <Link to={`${slug}`}>

@@ -18,9 +18,7 @@
 
     &-list {
         width: 50%;
-        min-width: 200px;
-        display: flex;
-        flex-direction: column;
+        min-width: 200px;        
 
         > li {
             transform: translateY(250px);

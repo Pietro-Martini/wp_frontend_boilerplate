@@ -19,6 +19,7 @@ html {
 // Mixins
 
 @import 'mq';
+@import 'columns';
 
 // Animations
 
@@ -27,6 +28,7 @@ html {
 // Components
 
 @import 'base';
+@import 'pagination';
 @import 'loader';
 @import 'header';
 @import 'btn';
