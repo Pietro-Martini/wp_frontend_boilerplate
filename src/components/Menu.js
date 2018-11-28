@@ -64,6 +64,7 @@ const Menu = ({active, toggleActiveState, logout, loggedIn, history, setDataFetc
                             {...pagination}
                             search={search}
                             getSearchResults={getSearchResults}
+                            currentPage={pagination.currentPage}
                           />
                         </React.Fragment>
                       )}

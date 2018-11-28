@@ -4,6 +4,8 @@ import encodeQueryParams from '../helpers/encodeQueryParams'
 
 const SearchPagination = ({
   pages,
+  hidePrevArrow,
+  hideNextArrow,
   handleNumClick,
   handleBackClick,
   handleNextClick,
@@ -11,13 +13,13 @@ const SearchPagination = ({
 }) => {
   return pages.length ? (
     <div className='pagination'>
-      <div onClick={e => handleBackClick(paginationUpdateCb)}>Previous</div>
+      {!hidePrevArrow && <div onClick={e => handleBackClick(paginationUpdateCb)}>Previous</div>}
       	<ul className='pagination__list'>
         {pages.map(p => (
           <li onClick={e => handleNumClick(p, paginationUpdateCb)}>{p}</li>
       		))}
       	</ul>
-      <div onClick={e => handleNextClick(paginationUpdateCb)}>Next</div>
+      {!hideNextArrow && <div onClick={e => handleNextClick(paginationUpdateCb)}>Next</div>}
     </div>
   ) : null
 }
@@ -28,9 +30,16 @@ export default props => {
   	props.getSearchResults({queryParams})
   }
 
+  const {pages, currentPage} = props
+
+  const hidePrevArrow = pages.indexOf(currentPage) === 0
+  const hideNextArrow = pages.indexOf(currentPage) === props.pages.length - 1
+
   return (
     <SearchPagination
       pages={props.pages}
+      hidePrevArrow={hidePrevArrow}
+      hideNextArrow={hideNextArrow}
       handleNumClick={props.handleNumClick}
       handleBackClick={props.handleBackClick}
       handleNextClick={props.handleNextClick}
