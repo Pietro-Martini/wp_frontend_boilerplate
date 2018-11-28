@@ -110,17 +110,23 @@ function createSlug($str, $delimiter = '-'){
 
 add_theme_support( 'post-thumbnails' );
 
-function custom__search_widget( $request ) {
-    $posts = [];
+function custom__search_widget( $request ) {    
     $results = [];
+    $postsPerPage = 5;
     // check for a search term
-    if( isset($request['search'])) :
-		// get posts
-        $posts = get_posts([
-            'posts_per_page' => 5,
-            'post_type' => ['page', 'post', 'custom-post-type'],
+    if( isset($request['search']) && isset($request['page'])) :    	
+
+    	$totalPosts = get_posts([
+    		'post_type' => ['page', 'post', 'custom-post-type'],
             's' => $request['search'],
-        ]);
+            'posts_per_page' => -1
+    	]);
+
+    	$page = $request['page'];
+    	$idx = $page - 1;
+    	$chunkedArr = array_chunk($totalPosts, $postsPerPage);
+
+    	$posts = $chunkedArr[$idx];
 
 		// set up the data I want to return
         foreach($posts as $post):
@@ -129,7 +135,7 @@ function custom__search_widget( $request ) {
 
             $results[] = array(
 				'title' => $post->post_title,
-                'slug' => $slug,
+                'slug' => $slug                
 			);
         endforeach;
     endif;
@@ -137,12 +143,18 @@ function custom__search_widget( $request ) {
     if( empty($results) ) :
         return array('data' => array(
 				'message' => 'No results found for your search...',
-				'status' => 401
+				'status' => 401				
 			),
 		);
     endif;
 
-    return rest_ensure_response( $results );
+    $response = array(
+    	'results' => $results,
+    	'search_count' => count($totalPosts),    	
+    	'results_per_page' => $postsPerPage    	
+    );
+
+    return rest_ensure_response( $response );
 }
 
 
