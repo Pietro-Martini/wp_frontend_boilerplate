@@ -22,15 +22,19 @@ export default class Pagination extends React.Component {
 	}	
 
 	render = () => {		
+		const {currentPage} = this.state
+
 		const maxPage = this.getMaxPage()
 		const pages = range(1, maxPage)		
 		return (
 			this.props.children({
 				pages,
-				currentPage: this.state.currentPage,
+				currentPage,
 				handleNumClick: this.handleNumClick,
 				handleBackClick: this.handleArrowClick(-1),
-				handleNextClick: this.handleArrowClick(1)
+				handleNextClick: this.handleArrowClick(1),
+				hidePrevArrow: pages.indexOf(currentPage) === 0,
+				hideNextArrow: pages.indexOf(currentPage) === pages.length - 1
 			})
 		)
 	}

@@ -30,16 +30,11 @@ export default props => {
   	props.getSearchResults({queryParams})
   }
 
-  const {pages, currentPage} = props
-
-  const hidePrevArrow = pages.indexOf(currentPage) === 0
-  const hideNextArrow = pages.indexOf(currentPage) === props.pages.length - 1
-
   return (
     <SearchPagination
       pages={props.pages}
-      hidePrevArrow={hidePrevArrow}
-      hideNextArrow={hideNextArrow}
+      hidePrevArrow={props.hidePrevArrow}
+      hideNextArrow={props.hideNextArrow}
       handleNumClick={props.handleNumClick}
       handleBackClick={props.handleBackClick}
       handleNextClick={props.handleNextClick}
