@@ -2,9 +2,11 @@ import React from 'react'
 import range from '../helpers/range'
 
 export default class Pagination extends React.Component {
-	state = {currentPage: 1}
+	state = {
+		currentPage: 1		
+	}
 
-	getMaxPage = () => Math.ceil(this.props.itemCount / this.props.itemsPerPage)
+	updateMaxPage = maxPage => this.setState({maxPage})	
 
 	handleNumClick = (paginationIdx, fn) => {
 		this.setState({
@@ -14,22 +16,23 @@ export default class Pagination extends React.Component {
 
 	handleArrowClick = direction => fn => {
 		const newPage = this.state.currentPage + direction
-		if (newPage > 0 && newPage <= this.getMaxPage()) {
+		if (newPage > 0 && newPage <= this.props.maxPage) {
 			this.setState({
-				currentPage: this.state.currentPage + direction
+				currentPage: newPage
 			}, e => fn(this.state.currentPage))
 		}			
 	}	
 
 	render = () => {		
-		const {currentPage} = this.state
+		const {currentPage} = this.state		
+		const {maxPage} = this.props
 
-		const maxPage = this.getMaxPage()
-		const pages = range(1, maxPage)		
+		const pages = range(1, maxPage)				
 		return (
 			this.props.children({
 				pages,
 				currentPage,
+				updateMaxPage: this.updateMaxPage,
 				handleNumClick: this.handleNumClick,
 				handleBackClick: this.handleArrowClick(-1),
 				handleNextClick: this.handleArrowClick(1),

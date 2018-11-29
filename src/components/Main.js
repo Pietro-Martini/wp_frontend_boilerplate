@@ -20,18 +20,18 @@ export default class extends React.Component {
   }
 
   render = () => {
-    const createRoutes = compose(createDefaultUrlFallback, mapRoutes(this.props)) 
+    const createRoutes = compose(createDefaultUrlFallback, mapRoutes(this.props))     
     return <Main routes={createRoutes([...this.props.pages, ...this.props.posts])} />
   }
 
 
 }
 
-const mapRoutes = ({pages, posts, history, setDataFetching}) => routeResources => routeResources.map(resource => {  
+const mapRoutes = ({pages, posts, getPosts, getPages, history, setDataFetching}) => routeResources => routeResources.map(resource => {  
   const resourceSlug = resource.slug || convertToSlug(resource.title.rendered || resource.title)
   // if a corresponding component isn't found in this collection
   // then we assume that it is a Post
-  const Component = pageComponents[resourceSlug] || Post  
+  const Component = pageComponents[resourceSlug] || Post    
   return (
     <Route
       key={resourceSlug}
@@ -40,6 +40,8 @@ const mapRoutes = ({pages, posts, history, setDataFetching}) => routeResources =
               {...resource}
               pages={pages}
               posts={posts}
+              getPages={getPages}
+              getPosts={getPosts}
               setDataFetching={setDataFetching}
               history={history}
           />

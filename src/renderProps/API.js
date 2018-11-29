@@ -61,19 +61,21 @@ function API ({initialState, reqArgs, apiReqFn}) {
 
         fetchData = ({endpoint, stateKey, method, transformStateFns}) =>
             ({queryParams = '', body, headers, successCb, errorCb} = {}) => {
-                this.props.setDataFetching(true)
+                this.props.setDataFetching(true)                
                 apiReqFn({
                     endpoint: `${endpoint}${queryParams}`,
                     method,
                     body,
                     headers,                    
                 })
-                .then(data => {
-                    this.props.setDataFetching(false)
-                    const newState = transformStateFns && compose(...transformStateFns)(data) || data
-                    this.setState({[stateKey]: newState}, () => {
-                        successCb && successCb(data)
-                    })
+                .then(res => {                    
+                    res.json().then(data => {                        
+                        this.props.setDataFetching(false)
+                        const newState = transformStateFns && compose(...transformStateFns)(data) || data
+                        this.setState({[stateKey]: newState}, () => {                            
+                            successCb && successCb(data, res)
+                        })
+                    })                    
                 })
                 .catch(res => {
                     const httpErrorMsg = `${method.toLowerCase()}Error`

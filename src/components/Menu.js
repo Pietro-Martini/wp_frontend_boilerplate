@@ -41,8 +41,7 @@ const Menu = ({active, toggleActiveState, logout, loggedIn, history, setDataFetc
             <SearchAPI setDataFetching={setDataFetching}>
               {({getSearchResults, searchResults, searchResultsResetState}) => (
                 <Pagination
-                  itemCount={searchResults.search_count}
-                  itemsPerPage={searchResults.results_per_page}
+                  maxPage={Math.ceil(searchResults.search_count / searchResults.results_per_page)}
                 >
                   {pagination => (
                     <SearchForm

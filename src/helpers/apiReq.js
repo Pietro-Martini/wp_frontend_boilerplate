@@ -9,14 +9,12 @@ function apiReq (baseUrl) {
     endpoint,
     headers,
     body,
-    method,
-    fn
+    method
   }) => {
     const url = `${baseUrl}${urlExtension}${endpoint}`
     const fetchArgs = {method, body, headers}
 
     return fetch(url, fetchArgs)
-      .then(res => res.json())
   }
 }
 
