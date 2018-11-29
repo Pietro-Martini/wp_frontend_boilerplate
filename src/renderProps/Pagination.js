@@ -4,9 +4,7 @@ import range from '../helpers/range'
 export default class Pagination extends React.Component {
 	state = {
 		currentPage: 1		
-	}
-
-	updateMaxPage = maxPage => this.setState({maxPage})	
+	}	
 
 	handleNumClick = (paginationIdx, fn) => {
 		this.setState({
